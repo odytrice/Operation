@@ -8,8 +8,12 @@ Using the Operation Monad helps ensure that you applications can fail gracefully
 At the Heart of the libaray are two types. They are `Operation` and `Operation<T>`. 
 An Operation represents the output of a piece of computation. It has two states: Successful or Failed
 It also contains a helpful message that states why the piece of computation failed. `Operation<T>` 
-also posesses a `Result` property that contains the Result of that Computation
+also posesses a `Result` property that contains the Result of that Computation.
 
+For more information about the `Monad` pattern, Checkout this Talk by Ben Albahari
+
+[![Programming with Purity](http://img.youtube.com/vi/aZCzG2I8Hds/mqdefault.jpg)](http://www.youtube.com/watch?v=aZCzG2I8Hds)<br/>
+Programming with Purity
 
 ##Installation 
 You can install OpExtensions via Nuget:
@@ -20,68 +24,69 @@ You can install OpExtensions via Nuget:
 ###1. Fault Tolerance
 
 ```csharp
-	public void ErrorProneFunction()
-	{
-		//Do Some Stuff
-		throw new Exception("Halt and Catch Fire");
-	}
+public void ErrorProneFunction()
+{
+	//Do Some Stuff
+	throw new Exception("Halt and Catch Fire");
+}
 
-	var operation = Operation.Create(ErrorProneFunction);
-	var suceeded = operation.Success //False
-	var message = operation.Message  //Halt and Catch Fire
+var operation = Operation.Create(ErrorProneFunction);
+var suceeded = operation.Success //False
+var message = operation.Message  //Halt and Catch Fire
 ```
 
 ###2. Operation Chaining
 You can chain multiple Operations together to produce a compound 
 
 ```csharp
-	var compoundOp = Operation.Create(ErrorFunction1)
-							  .Next(ErrorFunction2)
-							  .Next(ErrorFunction3);
+var compoundOp = Operation.Create(ErrorFunction1)
+						  .Next(ErrorFunction2)
+						  .Next(ErrorFunction3);
 							  
-	var suceeded = compoundOp.Success //Only Returns True if all 3 operations Succeeded
+var suceeded = compoundOp.Success //Only Returns True if all 3 operations Succeeded
 ```
 
 The Return values for Operations are passed on to the Next Functions if They accept parameters
 
 ```csharp
-	var compoundOp = Operation.Create(() => ErrorFunction1())
-							  .Next(r1 => ErrorFunction2(r1))	//r1 is the return Value of ErrorFunction 1
-							  .Next(r2 => ErrorFunction3(r2));	//r2 is the return Value of ErrorFunction 2
-							  							  
-	var suceeded = compoundOp.Success //Only Returns True if all 3 operations Succeeded
+var compoundOp = Operation.Create(() => ErrorFunction1())
+						  .Next(r1 => ErrorFunction2(r1))
+						  .Next(r2 => ErrorFunction3(r2));
+						  							  
+var suceeded = compoundOp.Success //Only Returns True if all 3 operations Succeeded
 ```
+`r1` and `r2` are the return values of `ErrorFunction1` and `ErrorFunction2` respectively
+
 ###3. Operation Dependency
 
 ```csharp
-	var operation = Operation.Create(() => {
-		var dependentOp = DependentOp();	//Returns an Operation
+var operation = Operation.Create(() => {
+	var dependentOp = DependentOp();	//Returns an Operation
 		
-		dependentOp.Throw(); //Throws an Exception up if the the Operation did not succeed
-		dependentOp.Throw("Simpler Error Message");
-		dependentOp.Throw(e => "Simpler Error Message: " + e);
-	});
+	dependentOp.Throw(); //Throws an Exception up if the the Operation did not succeed
+	dependentOp.Throw("Simpler Error Message");
+	dependentOp.Throw(e => "Simpler Error Message: " + e);
+});
 ```
 
 ###4. Async Support
 ```csharp
-	Task<Operation<T>> asyncOp = Operation.Run(async () => {
-		var result = await SomeLongRunningProcess();
-		//Do Other Stuff
-		return result;
-	});
+Task<Operation<T>> asyncOp = Operation.Run(async () => {
+	var result = await SomeLongRunningProcess();
+	//Do Other Stuff
+	return result;
+});
 	
 
-	var success = asyncOp.Result.Success	//Returns True if SomeLongRunningProcess() suceeds
-	var message = asyncOp.Result.Message	//Returns the message of the 
+var success = asyncOp.Result.Success	//Returns True if SomeLongRunningProcess() suceeds
+var message = asyncOp.Result.Message	//Returns the message of the 
 ```
 
 Its also easy to Convert Operations to Tasks for APIs that Require Tasks
 
 ```csharp
-	var op = Operation.Create(() => doStuff());
-	Task<int> t = op.AsTask();
+var op = Operation.Create(() => doStuff());
+Task<int> t = op.AsTask();
 ```
 
 Note that this is not the same as `Operation.Run` Execution will still block the running Thread
-
