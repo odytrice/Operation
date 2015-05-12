@@ -14,4 +14,74 @@ also posesses a `Result` property that contains the Result of that Computation
 ##Installation 
 You can install OpExtensions via Nuget:
 
-<code>install-package OpExtensions</code>
+<code>install-package Operation</code>
+
+##Features
+###1. Fault Tolerance
+
+```csharp
+	public void ErrorProneFunction()
+	{
+		//Do Some Stuff
+		throw new Exception("Halt and Catch Fire");
+	}
+
+	var operation = Operation.Create(ErrorProneFunction);
+	var suceeded = operation.Success //False
+	var message = operation.Message  //Halt and Catch Fire
+```
+
+###2. Operation Chaining
+You can chain multiple Operations together to produce a compound 
+
+```csharp
+	var compoundOp = Operation.Create(ErrorFunction1)
+							  .Next(ErrorFunction2)
+							  .Next(ErrorFunction3);
+							  
+	var suceeded = compoundOp.Success //Only Returns True if all 3 operations Succeeded
+```
+
+The Return values for Operations are passed on to the Next Functions if They accept parameters
+
+```csharp
+	var compoundOp = Operation.Create(() => ErrorFunction1())
+							  .Next(r1 => ErrorFunction2(r1))	//r1 is the return Value of ErrorFunction 1
+							  .Next(r2 => ErrorFunction3(r2));	//r2 is the return Value of ErrorFunction 2
+							  							  
+	var suceeded = compoundOp.Success //Only Returns True if all 3 operations Succeeded
+```
+###3. Operation Dependency
+
+```csharp
+	var operation = Operation.Create(() => {
+		var dependentOp = DependentOp();	//Returns an Operation
+		
+		dependentOp.Throw(); //Throws an Exception up if the the Operation did not succeed
+		dependentOp.Throw("Simpler Error Message");
+		dependentOp.Throw(e => "Simpler Error Message: " + e);
+	});
+```
+
+###4. Async Support
+```csharp
+	Task<Operation<T>> asyncOp = Operation.Run(async () => {
+		var result = await SomeLongRunningProcess();
+		//Do Other Stuff
+		return result;
+	});
+	
+
+	var success = asyncOp.Result.Success	//Returns True if SomeLongRunningProcess() suceeds
+	var message = asyncOp.Result.Message	//Returns the message of the 
+```
+
+Its also easy to Convert Operations to Tasks for APIs that Require Tasks
+
+```csharp
+	var op = Operation.Create(() => doStuff());
+	Task<int> t = op.AsTask();
+```
+
+Note that this is not the same as `Operation.Run` Execution will still block the running Thread
+
