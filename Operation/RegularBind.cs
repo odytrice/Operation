@@ -23,7 +23,8 @@ namespace System
             {
                 Success = false,
                 Result = default(T),
-                Message = operation.Message
+                Message = operation.Message,
+                Error = operation.Error
             };
         }
 
@@ -34,7 +35,8 @@ namespace System
             return new Operation
             {
                 Message = operation.Message,
-                Success = operation.Success
+                Success = operation.Success,
+                Error = operation.Error,
             };
         }
 
@@ -46,7 +48,8 @@ namespace System
             {
                 Success = false,
                 Result = default(U),
-                Message = operation.Message
+                Message = operation.Message,
+                Error = operation.Error
             };
         }
     }

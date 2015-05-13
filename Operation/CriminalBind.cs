@@ -23,7 +23,8 @@ namespace System
             {
                 Success = false,
                 Result = default(T),
-                Message = operation.Message
+                Message = operation.Message,
+                Error = operation.Error
             };
         }
 
@@ -31,11 +32,7 @@ namespace System
         {
             if (operation.Success)
                 return process(operation.Result);
-            return new Operation
-            {
-                Message = operation.Message,
-                Success = operation.Success
-            };
+            return operation;
         }
 
         public static Operation<U> Next<T, U>(this Operation<T> operation, Func<T,Operation<U>> process)
@@ -46,7 +43,8 @@ namespace System
             {
                 Success = false,
                 Result = default(U),
-                Message = operation.Message
+                Message = operation.Message,
+                Error = operation.Error
             };
         }
     }

@@ -18,9 +18,7 @@ namespace System
             }
             catch (Exception ex)
             {
-                while (ex.InnerException != null) ex = ex.InnerException;
-                operation.Success = false;
-                operation.Message = ex.Message;
+                operation.Catch(ex);
             }
             return operation;
         }
@@ -35,9 +33,7 @@ namespace System
             }
             catch (Exception ex)
             {
-                while (ex.InnerException != null) ex = ex.InnerException;
-                operation.Success = false;
-                operation.Message = ex.Message;
+                operation.Catch(ex);
             }
             return operation;
         }
@@ -52,9 +48,7 @@ namespace System
             }
             catch (Exception ex)
             {
-                while (ex.InnerException != null) ex = ex.InnerException;
-                operation.Success = false;
-                operation.Message = ex.Message;
+                operation.Catch(ex);
             }
             return operation;
         }
@@ -69,12 +63,18 @@ namespace System
             }
             catch (Exception ex)
             {
-                while (ex.InnerException != null) ex = ex.InnerException;
-                operation.Success = false;
-                operation.Message = ex.Message;
+                operation.Catch(ex);
             }
             return operation;
         }
+
+        private void Catch(Exception ex)
+        {
+            this.Error = ex;
+            while (ex.InnerException != null) ex = ex.InnerException;
+            this.Success = false;
+            this.Message = ex.Message;
+        } 
     }
 
 }

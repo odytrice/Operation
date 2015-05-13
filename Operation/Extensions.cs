@@ -18,7 +18,7 @@ namespace System
             return Task.Factory.StartNew(() =>
             {
                 if (operation.Success == false)
-                    throw new Exception(operation.Message);
+                    throw operation.Error;
             });
         }
         /// <summary>
@@ -32,7 +32,7 @@ namespace System
             return Task<T>.Factory.StartNew(() =>
             {
                 if (operation.Success == false)
-                    throw new Exception(operation.Message);
+                    throw operation.Error;
                 return operation.Result;
             });
         }
@@ -62,10 +62,10 @@ namespace System
         public static Operation Throw(this Operation operation, Func<string, string> messageExp)
         {
             var message = messageExp(operation.Message);
-            return Throw(operation,message);
+            return Throw(operation, message);
         }
 
-        public static Operation<T> Throw<T>(this Operation<T> operation, Func<string,string> messageExp)
+        public static Operation<T> Throw<T>(this Operation<T> operation, Func<string, string> messageExp)
         {
             var message = messageExp(operation.Message);
             return Throw(operation, message);

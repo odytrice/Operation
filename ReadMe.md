@@ -8,11 +8,11 @@ between domains/layers in your application.eg. Between Calls from WebApi to Busi
 
 ##Operation and Operation&lt;T&gt;
 At the Heart of the libaray are two types. They are `Operation` and `Operation<T>`. 
-An Operation represents the output of a piece of computation. It has two states: Successful or Failed
+An Operation represents the output of a piece of computation. It has two states: Success or Failure
 It also contains a helpful message that states why the piece of computation failed. `Operation<T>` 
 also posesses a `Result` property that contains the Result of that Computation.
 
-For more information about the `Monad` pattern, Checkout this Talk by Ben Albahari
+For more information about the `Monad` pattern, Checkout this Talk by Ben Albahari about Programming with Purity
 
 [![Programming with Purity](http://img.youtube.com/vi/aZCzG2I8Hds/mqdefault.jpg)](http://www.youtube.com/watch?v=aZCzG2I8Hds)<br/>
 Programming with Purity
@@ -28,7 +28,7 @@ You can install OpExtensions via Nuget:
 ```csharp
 public void ErrorProneFunction()
 {
-	//Do Some Stuff
+	//Doing Some Stuff
 	throw new Exception("Halt and Catch Fire");
 }
 
@@ -38,7 +38,7 @@ var message = operation.Message  //Halt and Catch Fire
 ```
 
 ###2. Operation Chaining
-You can chain multiple Operations together to produce a compound 
+You can chain multiple Operations together to produce a compound Operation
 
 ```csharp
 var compoundOp = Operation.Create(ErrorFunction1)
@@ -63,11 +63,11 @@ var suceeded = compoundOp.Success //Only Returns True if all 3 operations Succee
 
 ```csharp
 var operation = Operation.Create(() => {
-	var dependentOp = DependentOp();	//Returns an Operation
+	var dependedOp = DependentOp();	//Returns an Operation
 		
-	dependentOp.Throw(); //Throws an Exception up if the the Operation did not succeed
-	dependentOp.Throw("Simpler Error Message");
-	dependentOp.Throw(e => "Simpler Error Message: " + e);
+	dependedOp.Throw(); //Throws an Exception up if the the Operation did not succeed
+	dependedOp.Throw("Simpler Error Message");
+	dependedOp.Throw(e => "Simpler Error Message: " + e);
 });
 ```
 
@@ -80,8 +80,9 @@ Task<Operation<T>> asyncOp = Operation.Run(async () => {
 });
 	
 
-var success = asyncOp.Result.Success	//Returns True if SomeLongRunningProcess() suceeds
-var message = asyncOp.Result.Message	//Returns the message of the 
+var success = asyncOp.Result.Success	//Returns True if SomeLongRunningProcess() succeeds
+var message = asyncOp.Result.Message	//Returns the message of the
+var result = asyncOp.Result.Result		//Result of SomeLongRunningProcess() 
 ```
 
 Its also easy to Convert Operations to Tasks for APIs that Require Tasks
