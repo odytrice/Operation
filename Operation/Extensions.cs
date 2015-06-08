@@ -38,34 +38,54 @@ namespace System
         }
 
         /// <summary>
-        /// Throws an Exception if an Operation Fails
+        /// Unwraps the Operation if Successful and Throws an Exception if an Operation Fails
         /// </summary>
         /// <param name="operation"></param>
         /// <param name="message"></param>
+        public static void Throw(this Operation operation, string message = null)
+        {
+            message = message ?? operation.Message;
+            if (operation.Success == false)
+                throw (message == null)
+                    ? operation.Error
+                    : new Exception(message);
+        }
+        /// <summary>
+        /// Unwraps the Operation if Successful and Throws an Exception if an Operation Fails
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="operation"></param>
+        /// <param name="message">Optional Message to Mask Original Error</param>
         /// <returns></returns>
-        public static Operation Throw(this Operation operation, string message = null)
+        public static T Throw<T>(this Operation<T> operation, string message = null)
         {
             message = message ?? operation.Message;
             if (operation.Success == false)
-                throw new Exception(message);
-            return operation;
+                throw (message == null)
+                    ? operation.Error
+                    : new Exception(message, operation.Error);
+            return operation.Result;
         }
 
-        public static Operation<T> Throw<T>(this Operation<T> operation, string message = null)
-        {
-            message = message ?? operation.Message;
-            if (operation.Success == false)
-                throw new Exception(message);
-            return operation;
-        }
-
-        public static Operation Throw(this Operation operation, Func<string, string> messageExp)
+        /// <summary>
+        /// Unwraps the Operation if Successful and Throws an Exception if an Operation Fails
+        /// </summary>
+        /// <param name="operation"></param>
+        /// <param name="messageExp"></param>
+        public static void Throw(this Operation operation, Func<string, string> messageExp)
         {
             var message = messageExp(operation.Message);
-            return Throw(operation, message);
+            Throw(operation, message);
         }
 
-        public static Operation<T> Throw<T>(this Operation<T> operation, Func<string, string> messageExp)
+        /// <summary>
+        /// Unwraps the Operation if Successful and Throws an Exception if an Operation Fails
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="operation"></param>
+        /// <param name="messageExp"></param>
+        /// <returns></returns>
+        public static T Throw<T>(this Operation<T> operation, Func<string, string> messageExp)
         {
             var message = messageExp(operation.Message);
             return Throw(operation, message);

@@ -1,0 +1,46 @@
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace Tests
+{
+    [TestClass]
+    public class ExtensionsTest
+    {
+        [TestMethod]
+        public void TestOperationThrow()
+        {
+            var subOperation = Operation.Create(() =>
+            {
+                throw new Exception("The Error");
+            });
+
+            var operation = Operation.Create(() =>
+            {
+                subOperation.Throw();
+            });
+
+            Assert.IsFalse(operation.Success);
+            Assert.AreEqual(operation.Message, "The Error");
+        }
+
+        [TestMethod]
+        public void TestOperationResultThrow()
+        {
+            var subOperation = Operation.Create(() =>
+            {
+                var condition = true;
+                if (condition) throw new Exception("The Error");
+                return 1;
+            });
+
+            var operation = Operation.Create(() =>
+            {
+                var result = subOperation.Throw();
+                return result;
+            });
+
+            Assert.IsFalse(operation.Success);
+            Assert.AreEqual(operation.Message, "The Error");
+        }
+    }
+}

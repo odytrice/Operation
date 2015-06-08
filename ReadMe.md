@@ -61,6 +61,9 @@ var suceeded = compoundOp.Success //Only Returns True if all 3 operations Succee
 
 ###3. Operation Dependency
 
+If an Operation depends on another operation, you simply call the `Throw()` method on the dependent Operation
+and it halts exectuion and raises the error for the main operation to catch.
+
 ```csharp
 var operation = Operation.Create(() => {
 	var dependedOp = DependentOp();	//Returns an Operation
@@ -69,6 +72,16 @@ var operation = Operation.Create(() => {
 	dependedOp.Throw("Simpler Error Message");
 	dependedOp.Throw(e => "Simpler Error Message: " + e);
 });
+```
+The `Throw()` method also serves to unwrap the Operation object into its constituent 
+result. If the operation failed an Exception is thrown instead.
+
+```csharp
+var operation = Operation.Create(() => {
+	var dependentOp = DependentOp(); //Returns Operation<int>
+	int result = dependedOp.Throw();
+	return result + 2;
+});//Evaluates to Operation<int>
 ```
 
 ###4. Async Support
