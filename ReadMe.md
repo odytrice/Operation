@@ -73,8 +73,8 @@ var operation = Operation.Create(() => {
 	dependedOp.Throw(e => "Simpler Error Message: " + e);
 });
 ```
-The `Throw()` method also serves to unwrap the Operation object into its constituent 
-result. If the operation failed an Exception is thrown instead.
+The `Throw()` method also serves to unwrap the `Operation` object into its constituent 
+result and throws an Exception if the operation failed.
 
 ```csharp
 var operation = Operation.Create(() => {

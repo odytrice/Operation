@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>Operation</id>
-        <version>0.0.2</version>
+        <version>0.0.4</version>
         <title>Operation Extensions</title>
         <authors>Ody Mbegbu</authors>
         <projectUrl>https://github.com/odytrice/operation</projectUrl>
@@ -12,6 +12,5 @@
     </metadata>
     <files>
         <file src="Operation\bin\Release\Operation.dll" target="lib\Operation.dll" />
-        <file src="Operation\bin\Release\Operation.pdb" target="lib\Operation.pdb" />
     </files>
 </package>
