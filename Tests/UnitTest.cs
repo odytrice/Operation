@@ -11,13 +11,16 @@ namespace Tests
     [TestClass]
     public class UnitTest
     {
+        private Methods _methods;
+        public UnitTest()
+        {
+            _methods = new Methods();
+        }
+
         [TestMethod]
         public void OperationCreationSuccess()
         {
-            var operation = Operation.Create(() =>
-            {
-                Console.WriteLine("Hello Operation");
-            });
+            var operation = Operation.Create(_methods.Print);
 
             Assert.IsTrue(operation.Success);
         }
@@ -37,10 +40,7 @@ namespace Tests
         [TestMethod]
         public void OperationResult()
         {
-            var operation = Operation.Create(() =>
-            {
-                return 1;
-            });
+            var operation = Operation.Create<int>(_methods.ReturnInt);
 
             Assert.AreEqual(operation.Result, 1);
             Assert.IsTrue(operation.Success);

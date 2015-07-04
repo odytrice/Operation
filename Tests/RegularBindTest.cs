@@ -47,6 +47,14 @@ namespace Tests
             Assert.AreEqual(allops.Message, _op3.Message);
         }
         [TestMethod]
+        public void OperationNextRegularMethods()
+        {
+            //Arrange
+            var methods = new Methods();
+            //Act
+            var allOps = Operation.Create(methods.Print).Next(() => methods.Print());
+        }
+        [TestMethod]
         public void OperationNextFailed()
         {
             //Act

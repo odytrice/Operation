@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,11 +9,13 @@ namespace System
 {
     public static partial class Extensions
     {
+
         /// <summary>
         /// Converts an Operation to a Task
         /// </summary>
         /// <param name="operation"></param>
         /// <returns></returns>
+        [DebuggerHidden]
         public static Task AsTask(this Operation operation)
         {
             return Task.Factory.StartNew(() =>
@@ -27,6 +30,7 @@ namespace System
         /// <typeparam name="T">Return Type of Operation</typeparam>
         /// <param name="operation"></param>
         /// <returns></returns>
+        [DebuggerHidden]
         public static Task<T> AsTask<T>(this Operation<T> operation)
         {
             return Task<T>.Factory.StartNew(() =>
@@ -42,6 +46,7 @@ namespace System
         /// </summary>
         /// <param name="operation"></param>
         /// <param name="message"></param>
+        [DebuggerHidden]
         public static void Throw(this Operation operation, string message = null)
         {
             message = message ?? operation.Message;
@@ -57,6 +62,7 @@ namespace System
         /// <param name="operation"></param>
         /// <param name="message">Optional Message to Mask Original Error</param>
         /// <returns></returns>
+        [DebuggerHidden]
         public static T Throw<T>(this Operation<T> operation, string message = null)
         {
             message = message ?? operation.Message;
@@ -72,6 +78,7 @@ namespace System
         /// </summary>
         /// <param name="operation"></param>
         /// <param name="messageExp"></param>
+        [DebuggerHidden]
         public static void Throw(this Operation operation, Func<string, string> messageExp)
         {
             var message = messageExp(operation.Message);
@@ -85,6 +92,7 @@ namespace System
         /// <param name="operation"></param>
         /// <param name="messageExp"></param>
         /// <returns></returns>
+        [DebuggerHidden]
         public static T Throw<T>(this Operation<T> operation, Func<string, string> messageExp)
         {
             var message = messageExp(operation.Message);

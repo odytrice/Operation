@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ namespace System
 {
     public partial class Operation
     {
+        [DebuggerHidden]
         public static Operation Create(Action process)
         {
             var operation = new Operation();
@@ -23,6 +25,7 @@ namespace System
             return operation;
         }
 
+        [DebuggerHidden]
         public static Operation<T> Create<T>(Func<T> process)
         {
             var operation = new Operation<T>();
@@ -38,6 +41,7 @@ namespace System
             return operation;
         }
 
+        [DebuggerHidden]
         public static async Task<Operation> Run(Func<Task> process)
         {
             var operation = new Operation();
@@ -52,7 +56,7 @@ namespace System
             }
             return operation;
         }
-
+        [DebuggerHidden]
         public static async Task<Operation<T>> Run<T>(Func<Task<T>> process)
         {
             var operation = new Operation<T>();
@@ -67,7 +71,7 @@ namespace System
             }
             return operation;
         }
-
+        [DebuggerHidden]
         private void Catch(Exception ex)
         {
             this.Error = ex;
