@@ -12,7 +12,7 @@ namespace System
         [DebuggerHidden]
         public static Operation Next(this Operation operation, Func<Operation> process)
         {
-            if (operation.Success)
+            if (operation.Succeeded)
                 return process();
             return operation;
         }
@@ -20,11 +20,11 @@ namespace System
         [DebuggerHidden]
         public static Operation<T> Next<T>(this Operation operation, Func<Operation<T>> process)
         {
-            if (operation.Success)
+            if (operation.Succeeded)
                 return process();
             return new Operation<T>
             {
-                Success = false,
+                Succeeded = false,
                 Result = default(T),
                 Message = operation.Message,
                 Error = operation.Error
@@ -34,7 +34,7 @@ namespace System
         [DebuggerHidden]
         public static Operation Next<T>(this Operation<T> operation, Func<T,Operation> process)
         {
-            if (operation.Success)
+            if (operation.Succeeded)
                 return process(operation.Result);
             return operation;
         }
@@ -42,11 +42,11 @@ namespace System
         [DebuggerHidden]
         public static Operation<U> Next<T, U>(this Operation<T> operation, Func<T,Operation<U>> process)
         {
-            if (operation.Success)
+            if (operation.Succeeded)
                 return process(operation.Result);
             return new Operation<U>
             {
-                Success = false,
+                Succeeded = false,
                 Result = default(U),
                 Message = operation.Message,
                 Error = operation.Error

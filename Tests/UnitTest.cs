@@ -22,7 +22,7 @@ namespace Tests
         {
             var operation = Operation.Create(_methods.Print);
 
-            Assert.IsTrue(operation.Success);
+            Assert.IsTrue(operation.Succeeded);
         }
 
         [TestMethod]
@@ -33,7 +33,7 @@ namespace Tests
                 throw new Exception("The Error");
             });
 
-            Assert.IsFalse(operation.Success);
+            Assert.IsFalse(operation.Succeeded);
             Assert.AreEqual(operation.Message, "The Error");
         }
 
@@ -43,7 +43,7 @@ namespace Tests
             var operation = Operation.Create<int>(_methods.ReturnInt);
 
             Assert.AreEqual(operation.Result, 1);
-            Assert.IsTrue(operation.Success);
+            Assert.IsTrue(operation.Succeeded);
         }
 
         [TestMethod]
@@ -56,7 +56,7 @@ namespace Tests
                 return 1;
             });
 
-            Assert.IsFalse(operation.Success);
+            Assert.IsFalse(operation.Succeeded);
             Assert.AreEqual(operation.Message, "The Error");
             Assert.AreEqual(operation.Result, default(int));
         }
@@ -70,7 +70,7 @@ namespace Tests
 
             task.Wait();
 
-            Assert.IsTrue(task.Result.Success);
+            Assert.IsTrue(task.Result.Succeeded);
         }
 
         [TestMethod]
@@ -84,7 +84,7 @@ namespace Tests
 
             task.Wait();
 
-            Assert.IsFalse(task.Result.Success);
+            Assert.IsFalse(task.Result.Succeeded);
             Assert.AreEqual(task.Result.Message, "The Error");
         }
     }

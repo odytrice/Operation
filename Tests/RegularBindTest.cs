@@ -15,25 +15,25 @@ namespace Tests
             _op1 = new Operation
             {
                 Message = "Operation 1 Suceeded",
-                Success = true
+                Succeeded = true
             };
             _op2 = new Operation<string>
             {
                 Message = "Operation 2 Suceeded",
-                Success = true,
+                Succeeded = true,
                 Result = "Resulting String"
             };
             _op3 = new Operation<DateTime>
             {
                 Message = "Operation 3 Succeeded",
-                Success = true,
+                Succeeded = true,
                 Result = DateTime.Now
             };
             _fail = new Operation<string>
             {
                 Message = "Test Failed",
                 Result = "Failed",
-                Success = true
+                Succeeded = true
             };
         }
         [TestMethod]
@@ -43,7 +43,7 @@ namespace Tests
             var allops = _op1.Next(() => _op2).Next((r) => _op3);
 
             //Assert
-            Assert.IsTrue(allops.Success);
+            Assert.IsTrue(allops.Succeeded);
             Assert.AreEqual(allops.Message, _op3.Message);
         }
         [TestMethod]
@@ -63,13 +63,13 @@ namespace Tests
             var ops3 = _op2.Next((op) => _op1).Next(() => _fail);
 
             //Assert
-            Assert.IsFalse(ops1.Success);
+            Assert.IsFalse(ops1.Succeeded);
             Assert.AreEqual(ops1.Message, _fail.Message);
 
-            Assert.IsFalse(ops2.Success);
+            Assert.IsFalse(ops2.Succeeded);
             Assert.AreEqual(ops2.Message, _fail.Message);
 
-            Assert.IsFalse(ops3.Success);
+            Assert.IsFalse(ops3.Succeeded);
             Assert.AreEqual(ops3.Message, _fail.Message);
         }
     }

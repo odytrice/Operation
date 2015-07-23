@@ -19,7 +19,7 @@ namespace Tests
                 subOperation.Throw();
             });
 
-            Assert.IsFalse(operation.Success);
+            Assert.IsFalse(operation.Succeeded);
             Assert.AreEqual(operation.Message, "The Error");
         }
 
@@ -39,7 +39,7 @@ namespace Tests
                 return result;
             });
 
-            Assert.IsFalse(operation.Success);
+            Assert.IsFalse(operation.Succeeded);
             Assert.AreEqual(operation.Message, "The Error");
         }
     }

@@ -16,7 +16,7 @@ namespace System
             try
             {
                 process();
-                operation.Success = true;
+                operation.Succeeded = true;
             }
             catch (Exception ex)
             {
@@ -32,7 +32,7 @@ namespace System
             try
             {
                 operation.Result = process();
-                operation.Success = true;
+                operation.Succeeded = true;
             }
             catch (Exception ex)
             {
@@ -48,7 +48,7 @@ namespace System
             try
             {
                 await process();
-                operation.Success = true;
+                operation.Succeeded = true;
             }
             catch (Exception ex)
             {
@@ -63,7 +63,7 @@ namespace System
             try
             {
                 operation.Result = await process();
-                operation.Success = true;
+                operation.Succeeded = true;
             }
             catch (Exception ex)
             {
@@ -76,7 +76,7 @@ namespace System
         {
             this.Error = ex;
             while (ex.InnerException != null) ex = ex.InnerException;
-            this.Success = false;
+            this.Succeeded = false;
             this.Message = ex.Message;
         } 
     }
