@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>Operation</id>
-        <version>0.0.5</version>
+        <version>0.0.6</version>
         <title>Operation Extensions</title>
         <authors>Ody Mbegbu</authors>
         <projectUrl>https://github.com/odytrice/operation</projectUrl>
