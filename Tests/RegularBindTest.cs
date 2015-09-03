@@ -33,7 +33,7 @@ namespace Tests
             {
                 Message = "Test Failed",
                 Result = "Failed",
-                Succeeded = true
+                Succeeded = false
             };
         }
         [TestMethod]

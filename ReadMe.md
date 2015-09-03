@@ -57,7 +57,22 @@ var compoundOp = Operation.Create(() => ErrorFunction1())
 						  							  
 var suceeded = compoundOp.Success //Only Returns True if all 3 operations Succeeded
 ```
-`r1` and `r2` are the return values of `ErrorFunction1` and `ErrorFunction2` respectively
+`r1` and `r2` are the return values of `ErrorFunction1` and `ErrorFunction2` respectively.
+
+The `Operation<T>` also allows you chain operations using Linq query syntax as shown Below
+
+```csharp
+var operation = from res1 in operation1
+				from res2 in operation2
+				select res1 + res2 into temp
+				from res3 in operation3
+				select temp - res3;
+```
+The above code gets the result of `operation1` and `operation2`, adds them and then subtracts
+the result of `operation3`. And of course the final operation would only be successful
+if the entire computation worked without a hitch. Otherwise the Error and Message for the 
+faulty function would be returned.
+This should simplify chaining combining the results across operations.
 
 ###3. Operation Dependency
 
@@ -97,17 +112,6 @@ var success = asyncOp.Result.Success	//Returns True if SomeLongRunningProcess() 
 var message = asyncOp.Result.Message	//Returns the message of the
 var result = asyncOp.Result.Result		//Result of SomeLongRunningProcess() 
 ```
-
-###5. Linq Syntax Sugar
-The Operation<T> allows you chain operations using Linq Operators as shown Below
-
-```csharp
-var operation = from res1 in operation1
-				from res2 in operation2
-				from res3 in operation3
-				select res1 + res2 + res3;
-```
-This should simplify chaining combining the results across operations.
 
 ###6. Conversion
 Its also easy to Convert Operations to Tasks for APIs that Require Tasks

@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>Operation</id>
-        <version>0.0.8</version>
+        <version>0.1.0</version>
         <title>Operation Extensions</title>
         <authors>Ody Mbegbu</authors>
         <projectUrl>https://github.com/odytrice/operation</projectUrl>
@@ -11,6 +11,6 @@
         <tags>Monad, Operation, Operation Extensions</tags>
     </metadata>
     <files>
-        <file src="Operation\bin\Release\Operation.dll" target="lib\Operation.dll" />
+        <file src="Operation\bin\Debug\Operation.dll" target="lib\Operation.dll" />
     </files>
 </package>
