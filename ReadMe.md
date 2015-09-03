@@ -98,6 +98,18 @@ var message = asyncOp.Result.Message	//Returns the message of the
 var result = asyncOp.Result.Result		//Result of SomeLongRunningProcess() 
 ```
 
+###5. Linq Syntax Sugar
+The Operation<T> allows you chain operations using Linq Operators as shown Below
+
+```csharp
+var operation = from res1 in operation1
+				from res2 in operation2
+				from res3 in operation3
+				select res1 + res2 + res3;
+```
+This should simplify chaining combining the results across operations.
+
+###6. Conversion
 Its also easy to Convert Operations to Tasks for APIs that Require Tasks
 
 ```csharp

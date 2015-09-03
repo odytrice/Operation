@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="CriminalBind.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="LinqSugar.cs" />
     <Compile Include="Operation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegularBind.cs" />
