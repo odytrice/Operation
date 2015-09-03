@@ -113,7 +113,7 @@ var message = asyncOp.Result.Message	//Returns the message of the
 var result = asyncOp.Result.Result		//Result of SomeLongRunningProcess() 
 ```
 
-###6. Conversion
+###5. Conversion
 Its also easy to Convert Operations to Tasks for APIs that Require Tasks
 
 ```csharp
