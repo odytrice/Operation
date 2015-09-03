@@ -1,4 +1,4 @@
-#Operation Extensions (OpExtension)
+#Operation Extension
 
 This Library defines an Abstraction for [Defensive Programming](http://en.wikipedia.org/wiki/Defensive_programming). 
 Its based on the [Monad](http://en.wikipedia.org/wiki/Monad_%28functional_programming%29) pattern.
@@ -6,17 +6,17 @@ Using the Operation Monad helps ensure that you applications can fail gracefully
 Defensive Programming is not about hiding failures, Its about recognizing and embracing them. It's typically used at the boundries 
 between domains/layers in your application.eg. Between Calls from WebApi to Business Layer or between calls from your Business Layer to your DataAccess Layer
 
+For more information about the `Monad` pattern, Checkout this Talk by Ben Albahari about Programming with Purity
+
+[![Programming with Purity](http://img.youtube.com/vi/aZCzG2I8Hds/mqdefault.jpg)](http://www.youtube.com/watch?v=aZCzG2I8Hds)<br/>
+Programming with Purity
+
 ##Operation and Operation&lt;T&gt;
 At the Heart of the libaray are two types. They are `Operation` and `Operation<T>`. 
 An Operation represents the output of a piece of computation. It has two states: Success or Failure. To represent this, a boolean flag `Succeeded` tells you wether the computation suceeded or failed.
 It also contains an Error property that contains the complete Exception including the Stack trace and all.
 It also contains a helpful message that states why the piece of computation failed. `Operation<T>` 
 also posesses a `Result` property that contains the Result of that Computation.
-
-For more information about the `Monad` pattern, Checkout this Talk by Ben Albahari about Programming with Purity
-
-[![Programming with Purity](http://img.youtube.com/vi/aZCzG2I8Hds/mqdefault.jpg)](http://www.youtube.com/watch?v=aZCzG2I8Hds)<br/>
-Programming with Purity
 
 ##Installation 
 You can install OpExtensions via Nuget:
