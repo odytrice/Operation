@@ -33,7 +33,7 @@ namespace Tests
             {
                 Message = "Test Failed",
                 Result = "Failed",
-                Succeeded = true
+                Succeeded = false
             };
         }
         [TestMethod]
@@ -42,12 +42,13 @@ namespace Tests
             //Act
             var allops = from o2 in _op2
                          from o3 in _op3
-                         from o1 in _op2
-                         select o3.ToString() + o2 + o1;
+                         select o2 + o3 into g
+                         from f in _fail
+                         select g + f;
 
             //Assert
-            Assert.IsTrue(allops.Succeeded);
-            Assert.AreEqual(allops.Message, _op3.Message);
+            Assert.IsFalse(allops.Succeeded);
+            Assert.AreEqual(allops.Message, _fail.Message);
         }
         [TestMethod]
         public void OperationNextRegularMethods()

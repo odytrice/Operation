@@ -19,6 +19,16 @@ namespace System
                 {
                     return Operation.Create(() => projection(operation.Result, op2.Result));
                 }
+                else
+                {
+                    return new Operation<V>
+                    {
+                        Succeeded = false,
+                        Error = op2.Error,
+                        Message = op2.Message,
+                        Result = default(V)
+                    };
+                }
             }
             return new Operation<V>
             {
