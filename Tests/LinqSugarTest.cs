@@ -42,6 +42,7 @@ namespace Tests
             //Act
             var allops = from o2 in _op2
                          from o3 in _op3
+                         let o = o2
                          select o2 + o3 into g
                          from f in _fail
                          select g + f;

@@ -38,5 +38,11 @@ namespace System
                 Error = operation.Error
             };
         }
+
+        [DebuggerHidden]
+        public static Operation<U> Select<T, U>(this Operation<T> operation, Func<T, U> process)
+        {
+            return Extensions.Next(operation, process);
+        }
     }
 }
