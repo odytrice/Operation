@@ -21,21 +21,19 @@ namespace System
                 }
                 else
                 {
-                    return new Operation<V>
+                    return new Operation<V>(op2.GetException())
                     {
                         Succeeded = false,
-                        Error = op2.Error,
                         Message = op2.Message,
                         Result = default(V)
                     };
                 }
             }
-            return new Operation<V>
+            return new Operation<V>(operation.GetException())
             {
                 Succeeded = false,
                 Result = default(V),
                 Message = operation.Message,
-                Error = operation.Error
             };
         }
 

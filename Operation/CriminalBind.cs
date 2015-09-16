@@ -22,12 +22,11 @@ namespace System
         {
             if (operation.Succeeded)
                 return process();
-            return new Operation<T>
+            return new Operation<T>(operation.GetException())
             {
                 Succeeded = false,
                 Result = default(T),
-                Message = operation.Message,
-                Error = operation.Error
+                Message = operation.Message
             };
         }
 
@@ -44,12 +43,11 @@ namespace System
         {
             if (operation.Succeeded)
                 return process(operation.Result);
-            return new Operation<U>
+            return new Operation<U>(operation.GetException())
             {
                 Succeeded = false,
                 Result = default(U),
-                Message = operation.Message,
-                Error = operation.Error
+                Message = operation.Message
             };
         }
     }

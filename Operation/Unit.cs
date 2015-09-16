@@ -72,9 +72,9 @@ namespace System
             return operation;
         }
         [DebuggerHidden]
-        private void Catch(Exception ex)
+        public void Catch(Exception ex)
         {
-            this.Error = ex;
+            this._exception = ex;
             while (ex.InnerException != null) ex = ex.InnerException;
             this.Succeeded = false;
             this.Message = ex.Message;

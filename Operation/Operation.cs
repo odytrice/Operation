@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace System
 {
@@ -14,7 +15,22 @@ namespace System
     {
         public bool Succeeded { get; set; }
         public string Message { get; set; }
-        public Exception Error { get; set; }
+
+
+        protected Exception _exception;
+        public Exception GetException()
+        {
+            return _exception;
+        }
+
+        public Operation()
+        {
+
+        }
+        public Operation(Exception ex)
+        {
+            _exception = ex;
+        }
     }
 
     /// <summary>
@@ -24,5 +40,16 @@ namespace System
     public partial class Operation<T> : Operation
     {
         public T Result { get; set; }
+
+        public Operation()
+        {
+
+        }
+
+        public Operation(Exception ex)
+        {
+            _exception = ex;
+        }
+             
     }
 }

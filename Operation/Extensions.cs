@@ -21,7 +21,7 @@ namespace System
             return Task.Factory.StartNew(() =>
             {
                 if (operation.Succeeded == false)
-                    throw operation.Error;
+                    throw operation.GetException();
             });
         }
         /// <summary>
@@ -36,7 +36,7 @@ namespace System
             return Task<T>.Factory.StartNew(() =>
             {
                 if (operation.Succeeded == false)
-                    throw operation.Error;
+                    throw operation.GetException();
                 return operation.Result;
             });
         }
@@ -52,7 +52,7 @@ namespace System
             message = message ?? operation.Message;
             if (operation.Succeeded == false)
                 throw (message == null)
-                    ? operation.Error
+                    ? operation.GetException()
                     : new Exception(message);
         }
         /// <summary>
@@ -68,8 +68,8 @@ namespace System
             message = message ?? operation.Message;
             if (operation.Succeeded == false)
                 throw (message == null)
-                    ? operation.Error
-                    : new Exception(message, operation.Error);
+                    ? operation.GetException()
+                    : new Exception(message, operation.GetException());
             return operation.Result;
         }
 

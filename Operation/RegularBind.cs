@@ -21,12 +21,11 @@ namespace System
         {
             if (operation.Succeeded)
                 return Operation.Create(process);
-            return new Operation<T>
+            return new Operation<T>(operation.GetException())
             {
                 Succeeded = false,
                 Result = default(T),
                 Message = operation.Message,
-                Error = operation.Error
             };
         }
         [DebuggerHidden]
@@ -34,11 +33,10 @@ namespace System
         {
             if (operation.Succeeded)
                 return Operation.Create(() => process(operation.Result));
-            return new Operation
+            return new Operation()
             {
                 Message = operation.Message,
                 Succeeded = operation.Succeeded,
-                Error = operation.Error,
             };
         }
         [DebuggerHidden]
@@ -46,12 +44,11 @@ namespace System
         {
             if (operation.Succeeded)
                 return Operation.Create(() => process(operation.Result));
-            return new Operation<U>
+            return new Operation<U>(operation.GetException())
             {
                 Succeeded = false,
                 Result = default(U),
-                Message = operation.Message,
-                Error = operation.Error
+                Message = operation.Message
             };
         }
     }
