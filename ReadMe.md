@@ -60,7 +60,10 @@ var suceeded = compoundOp.Success //Only Returns True if all 3 operations Succee
 ```
 `r1` and `r2` are the return values of `ErrorFunction1` and `ErrorFunction2` respectively.
 
-The `Operation<T>` also allows you chain operations using Linq query syntax as shown Below
+###3. Linq Syntax
+
+The `Operation<T>` also allows you chain operations using Linq query syntax. This makes the flow of execution clearer. 
+    It also allows you to easily combine the interim results of operations as shown below
 
 ```csharp
 var operation = from res1 in operation1
@@ -75,7 +78,7 @@ if the entire computation worked without a hitch. Otherwise the Error and Messag
 faulty function would be returned.
 This should simplify chaining combining the results across operations.
 
-###3. Operation Dependency
+###4. Operation Dependency
 
 If an Operation depends on another operation, you simply call the `Throw()` method on the dependent Operation
 and it halts exectuion and raises the error for the main operation to catch.
@@ -107,7 +110,7 @@ var operation = Operation.Create(() => {
 });
 ```
 
-###4. Async Support
+###5. Async Support
 ```csharp
 Task<Operation<T>> asyncOp = Operation.Run(async () => {
 	var result = await SomeLongRunningProcess();
@@ -121,7 +124,7 @@ var message = asyncOp.Result.Message	//Returns the message of the
 var result = asyncOp.Result.Result		//Result of SomeLongRunningProcess() 
 ```
 
-###5. Conversion
+###6. Conversion
 Its also easy to Convert Operations to Tasks for APIs that Require Tasks
 
 ```csharp

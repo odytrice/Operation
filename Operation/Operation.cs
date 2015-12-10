@@ -18,10 +18,7 @@ namespace System
 
 
         protected Exception _exception;
-        public Exception GetException()
-        {
-            return _exception;
-        }
+        public Exception GetException() => _exception;
 
         public Operation()
         {
@@ -50,6 +47,5 @@ namespace System
         {
             _exception = ex;
         }
-             
     }
 }
