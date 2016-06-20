@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace System
 {
-    public static partial class Extensions
+    public static partial class OperationExtensions
     {
         [DebuggerHidden]
         public static Operation Next(this Operation operation, Action process)

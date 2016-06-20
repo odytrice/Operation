@@ -24,7 +24,7 @@ namespace Tests
         }
 
         [TestMethod]
-        public void TestOperationResultThrow()
+        public void TestOperationResultUnwrap()
         {
             var subOperation = Operation.Create(() =>
             {
@@ -35,7 +35,7 @@ namespace Tests
 
             var operation = Operation.Create(() =>
             {
-                var result = subOperation.Throw();
+                var result = subOperation.Unwrap();
                 return result;
             });
 

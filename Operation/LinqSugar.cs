@@ -40,7 +40,7 @@ namespace System
         [DebuggerHidden]
         public static Operation<U> Select<T, U>(this Operation<T> operation, Func<T, U> process)
         {
-            return Extensions.Next(operation, process);
+            return OperationExtensions.Next(operation, process);
         }
     }
 }

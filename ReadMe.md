@@ -12,14 +12,14 @@ For more information about the `Monad` pattern, Checkout this Talk by Ben Albaha
 Programming with Purity
 
 ##Operation and Operation&lt;T&gt;
-At the Heart of the libaray are two types. They are `Operation` and `Operation<T>`. 
-An Operation represents the output of a piece of computation. It has two states: Success or Failure. To represent this, a boolean flag `Succeeded` tells you wether the computation suceeded or failed.
-It also contains an Error property that contains the complete Exception including the Stack trace and all.
+At the Heart of the library are two types. They are `Operation` and `Operation<T>`. 
+An Operation represents the output of a piece of computation. It has two states: Success or Failure. To represent this, a boolean flag `Succeeded` tells you wether the computation succeeded or failed.
+It also contains an Error field that contains the complete Exception including the Stack trace and all.
 It also contains a helpful message that states why the piece of computation failed. `Operation<T>` 
-also posesses a `Result` property that contains the Result of that Computation.
+also possesses a `Result` property that contains the Result of that Computation.
 
 ##Installation 
-You can install OpExtensions via Nuget:
+You can install Operation library via Nuget:
 
 <code>install-package Operation</code>
 
@@ -34,8 +34,8 @@ public void ErrorProneFunction()
 }
 
 var operation = Operation.Create(ErrorProneFunction);
-var suceeded = operation.Success //False
-var message = operation.Message  //Halt and Catch Fire
+var suceeded = operation.Succeeded //False
+var message = operation.Message    //Halt and Catch Fire
 ```
 
 ###2. Operation Chaining
@@ -46,7 +46,7 @@ var compoundOp = Operation.Create(ErrorFunction1)
 						  .Next(ErrorFunction2)
 						  .Next(ErrorFunction3);
 							  
-var suceeded = compoundOp.Success //Only Returns True if all 3 operations Succeeded
+var suceeded = compoundOp.Succeeded //Only Returns True if all 3 operations Succeeded
 ```
 
 The Return values for Operations are passed on to the Next Functions if They accept parameters
@@ -56,7 +56,7 @@ var compoundOp = Operation.Create(() => ErrorFunction1())
 						  .Next(r1 => ErrorFunction2(r1))
 						  .Next(r2 => ErrorFunction3(r2));
 						  							  
-var suceeded = compoundOp.Success //Only Returns True if all 3 operations Succeeded
+var suceeded = compoundOp.Succeeded //Only Returns True if all 3 operations Succeeded
 ```
 `r1` and `r2` are the return values of `ErrorFunction1` and `ErrorFunction2` respectively.
 
@@ -80,32 +80,32 @@ This should simplify chaining combining the results across operations.
 
 ###4. Operation Dependency
 
-If an Operation depends on another operation, you simply call the `Throw()` method on the dependent Operation
+If an Operation depends on another operation, you simply call the `Unwrap()` method on the dependent Operation
 and it halts exectuion and raises the error for the main operation to catch.
 
 ```csharp
 var operation = Operation.Create(() => {
 	var dependedOp = DependentOp();	//Returns an Operation
 		
-	dependedOp.Throw(); //Throws an Exception up if the the Operation did not succeed
-	dependedOp.Throw("Simpler Error Message");
-	dependedOp.Throw(e => "Simpler Error Message: " + e);
+	dependedOp.Unwrap(); //Throws an Exception up if the the Operation did not succeed
+	dependedOp.Unwrap("Simpler Error Message");
+	dependedOp.Unwrap(e => "Simpler Error Message: " + e);
 });
 ```
-The `Throw()` method also serves to unwrap the `Operation` object into its constituent 
+The `Unwrap()` method also serves to unwrap the `Operation` object into its constituent 
 result and throws an Exception if the operation failed.
 
 NOTE: Throwing with a custom message replaces the original Exception. 
 This is useful if you do not want clients to see the original exception 
-but should instead a more friendly error message.
+but should instead see a more friendly error message.
 
-The `throw()` method can also be used to make operations depend on other operations in a
+The `Unwrap()` method can also be used to make operations depend on other operations in a
 clean way
 
 ```csharp
 var operation = Operation.Create(() => {
 	var dependentOp = DependentOp();  //Returns Operation<int>
-	int result = dependedOp.Throw();
+	int result = dependedOp.Unwrap();
 	return result + 2;				//Runs only if dependedOp was successful.
 });
 ```
