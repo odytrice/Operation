@@ -1,14 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>Operation</id>
-        <version>0.1.7</version>
+        <version>1.0.0</version>
         <title>Operation Extensions</title>
         <authors>Ody Mbegbu</authors>
         <projectUrl>https://github.com/odytrice/operation</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>This Library defines an Abstraction for Defensive Programming. Its based on the Monad pattern. Using the Operation Monad helps ensure that you applications can fail gracefully even in unforseen circumstances.</description>
-        <tags>Monad, Operation, Operation Extensions</tags>
+        <description>This Library defines an abstraction for Defensive Programming. Its based on the Monad pattern. Using the Operation Monad helps ensure that you applications can fail gracefully even in unforseen circumstances.</description>
+        <releaseNotes>https://github.com/odytrice/Operation/blob/master/Changelog.md</releaseNotes>
+        <tags>Monad, Operation, Operation Extensions, Exceptions</tags>
+        <serviceable>false</serviceable>
     </metadata>
     <files>
         <file src="Operation\bin\Release\Operation.dll" target="lib\Operation.dll" />
