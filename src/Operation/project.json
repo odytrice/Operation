@@ -1,0 +1,33 @@
+﻿{
+  "version": "1.0.3-*",
+
+  "authors": [ "Ody Mbegbu" ],
+  "description": "This Library defines an abstraction for Defensive Programming. Its based on the Monad pattern. Using the Operation Monad helps ensure that you applications can fail gracefully even in unforseen circumstances.",
+  "title": "Operation Extensions",
+  "packOptions": {
+    "projectUrl": "https://github.com/odytrice/operation",
+    "requireLicenseAcceptance": false,
+    "releaseNotes": "https://github.com/odytrice/Operation/blob/master/Changelog.md",
+    "tags": [ "Monad", "Operation", "Operation", "Extensions", "Exceptions" ]
+  },
+
+  "dependencies": {
+    
+  },
+
+  "frameworks": {
+    "netstandard1.6": {
+      "dependencies": {
+        "NETStandard.Library": "1.6.0"
+      },
+      "imports": "dnxcore50"
+    },
+    "net45": {}
+  },
+
+  "scripts": {
+    "postcompile": [
+      "dotnet pack --no-build --configuration %compile:Configuration%"
+    ]
+  }
+}
