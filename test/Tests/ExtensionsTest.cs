@@ -42,5 +42,63 @@ namespace Tests
             Assert.IsFalse(operation.Succeeded);
             Assert.AreEqual(operation.Message, "The Error");
         }
+
+
+        [TestMethod]
+        public void All()
+        {
+            var op1 = Operation.Create(() => "Hello");
+            var op2 = Operation.Create(() => "World");
+
+            var all = new[] { op1, op2 }.Fold((a, s) => a + " " + s);
+
+            Assert.AreEqual("Hello World", all.Result);
+        }
+
+        [TestMethod]
+        public void AllWithFailure()
+        {
+            var op1 = Operation.Create(() => "Hello");
+            var op2 = Operation.Create(() =>
+            {
+                throw new Exception("Something Bad Happened");
+                return "";
+            });
+
+            var all = new[] { op1, op2 }.Fold((a, s) => a + " " + s);
+
+            
+            Assert.IsNull(all.Result);
+            Assert.IsFalse(all.Succeeded);
+            Assert.AreEqual("Something Bad Happened", all.Message);
+        }
+
+
+        [TestMethod]
+        public void GenericAll()
+        {
+            var op1 = Operation.Create(() => "Hello");
+            var op2 = Operation.Create(() => "World");
+
+            var all = new[] { op1, op2 }.Fold();
+
+            Assert.IsTrue(all.Succeeded);
+        }
+
+        [TestMethod]
+        public void GenericAllWithFailure()
+        {
+            var op1 = Operation.Create(() => "Hello");
+            var op2 = Operation.Create(() =>
+            {
+                throw new Exception("Something Bad Happened");
+                return "";
+            });
+
+            var all = new[] { op1, op2 }.Fold();
+
+            Assert.IsFalse(all.Succeeded);
+            Assert.AreEqual("Something Bad Happened", all.Message);
+        }
     }
 }

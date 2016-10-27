@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
 
@@ -52,6 +53,36 @@ namespace Tests
             Assert.IsFalse(allops.Succeeded);
             Assert.AreEqual(allops.Message, _fail.Message);
         }
+
+
+        [TestMethod]
+        public void LinqWithEnumerableFirst()
+        {
+            var list = new[] { 1, 2, 3 };
+
+            var query = from x in list
+                        from y in _op2
+                        select x + " " + y;
+
+            var expected = new[] { "1 Resulting String", "2 Resulting String", "3 Resulting String" };
+            var result = query.Select(r => r.Result).ToArray();
+            Assert.IsTrue(result.SequenceEqual(expected));
+        }
+
+        [TestMethod]
+        public void LinqWithOperationFirst()
+        {
+            var list = new[] { 1, 2, 3 };
+
+            var query = from y in _op2
+                        from x in list
+                        select x + " " + y;
+
+            var expected = new[] { "1 Resulting String", "2 Resulting String", "3 Resulting String" };
+            var result = query.ToArray();
+            Assert.IsTrue(expected.SequenceEqual(result));
+        }
+
         [TestMethod]
         public void LinqAsyncTest()
         {

@@ -42,6 +42,10 @@ var message = operation.Message    //Halt and Catch Fire
 You can chain multiple Operations together to produce a compound Operation
 
 ```csharp
+Func<int> ErrorFunction1 = x => 10;
+Func<int, string> ErrorFunction2 = x => x + " Cups";
+Func<string, string> ErrorFunction3 = s => s.ToUpper();
+
 var compoundOp = Operation.Create(ErrorFunction1)
 						  .Next(ErrorFunction2)
 						  .Next(ErrorFunction3);
@@ -52,11 +56,17 @@ var suceeded = compoundOp.Succeeded //Only Returns True if all 3 operations Succ
 The Return values for Operations are passed on to the Next Functions if They accept parameters
 
 ```csharp
+
+Func<int> ErrorFunction1 = x => 10;
+Func<int, string> ErrorFunction2 = x => x + " Cups";
+Func<string, string> ErrorFunction3 = s => s.ToUpper();
+
 var compoundOp = Operation.Create(() => ErrorFunction1())
 						  .Next(r1 => ErrorFunction2(r1))
 						  .Next(r2 => ErrorFunction3(r2));
 						  							  
-var suceeded = compoundOp.Succeeded //Only Returns True if all 3 operations Succeeded
+var suceeded = compoundOp.Succeeded; // Only Returns True if all 3 operations Succeeded
+var result = compoundOp.Result;	     // "10 CUPS"
 ```
 `r1` and `r2` are the return values of `ErrorFunction1` and `ErrorFunction2` respectively.
 
@@ -66,11 +76,17 @@ The `Operation<T>` also allows you chain operations using Linq query syntax. Thi
     It also allows you to easily combine the interim results of operations as shown below
 
 ```csharp
+var operation1 = Operation.Create(() => 10);
+var operation2 = Operation.Create(() => 12);
+var operation3 = Operation.Create(() => 3);
+
 var operation = from res1 in operation1
 				from res2 in operation2
 				select res1 + res2 into temp
 				from res3 in operation3
 				select temp - res3;
+
+var result = operation.Unwrap(); // 19 or throws an Exception if any of the Operations failed
 ```
 The above code gets the result of `operation1` and `operation2`, adds them and then subtracts
 the result of `operation3`. And of course the final operation would only be successful
@@ -78,7 +94,50 @@ if the entire computation worked without a hitch. Otherwise the Error and Messag
 faulty function would be returned.
 This should simplify chaining combining the results across operations.
 
-###4. Operation Dependency
+###4. Batch Operations
+The linq syntax is also extended to allow you to mix Linq Queries with Operation Queries. 
+This is useful for doing batch operations in a safe way
+
+```csharp
+var list = new []{ 1 , 2, 3 };
+
+var op = Operation.Create(() => "Resulting String");
+
+var query = from x in list
+			from y in op
+			select x + " " + y;
+
+var result = query.Select(r => r.Result).ToArray(); //["1 Resulting String", "2 Resulting String", "3 Resulting String"]
+```
+
+Operations can also seemlessly transition into Linq Queries
+
+```csharp
+var list = new []{ 1 , 2, 3 };
+
+var op1 = Operation.Create(() => "First");
+var op2 = Operation.Create(() => "Second")
+
+var query = from x in op1
+			from y in op2
+			from z in list
+			select x + " " + y + " " + z;
+
+var result = query.ToArray(); //["1 First Second", "2 First Second", "3 First Second"]
+```
+
+The `Fold()` can also be used to collapse a sequence of operations by "folding" them into a single Operation
+
+```csharp
+var op1 = Operation.Create(() => "Hello");
+var op2 = Operation.Create(() => "World");
+
+var all = new[] { op1, op2 }.Fold((a, s) => a + " " + s);
+
+var succeeded = all.Succeeded;	//true 
+var result = all.Result;		//"Hello World"
+```
+###5. Operation Dependency
 
 If an Operation depends on another operation, you simply call the `Unwrap()` method on the dependent Operation
 and it halts exectuion and raises the error for the main operation to catch.
@@ -104,13 +163,13 @@ clean way
 
 ```csharp
 var operation = Operation.Create(() => {
-	var dependentOp = DependentOp();  //Returns Operation<int>
+	var dependentOp = DependentOp();  	//Returns Operation<int>
 	int result = dependedOp.Unwrap();
-	return result + 2;				//Runs only if dependedOp was successful.
+	return result + 2;					//Runs only if dependedOp was successful.
 });
 ```
 
-###5. Async Support
+###6. Async Support
 ```csharp
 Task<Operation<T>> asyncOp = Operation.Run(async () => {
 	var result = await SomeLongRunningProcess();
@@ -124,7 +183,7 @@ var message = asyncOp.Result.Message	//Returns the message of the
 var result = asyncOp.Result.Result		//Result of SomeLongRunningProcess() 
 ```
 
-###6. Conversion
+###7. Conversion
 Its also easy to Convert Operations to Tasks for APIs that Require Tasks
 
 ```csharp
