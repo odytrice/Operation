@@ -25,4 +25,5 @@ build_script:
   # Run build
   - ps: $env:VersionSuffix = "011" + $env:APPVEYOR_BUILD_NUMBER.PadLeft(3, "0")
   # -VersionSuffix %VersionSuffix%
-  - cmd: dotnet build 
+  - ps: .\build.ps1 build
+  - ps: .\build.ps1 test
