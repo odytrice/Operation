@@ -61,7 +61,8 @@ namespace Tests
             var op1 = Operation.Create(() => "Hello");
             var op2 = Operation.Create(() =>
             {
-                throw new Exception("Something Bad Happened");
+                bool isUserAGoat = false;
+                if(!isUserAGoat) throw new Exception("Something Bad Happened");
                 return "";
             });
 
@@ -91,7 +92,8 @@ namespace Tests
             var op1 = Operation.Create(() => "Hello");
             var op2 = Operation.Create(() =>
             {
-                throw new Exception("Something Bad Happened");
+                bool isUserAGoat = false;
+                if(!isUserAGoat) throw new Exception("Something Bad Happened");
                 return "";
             });
 
