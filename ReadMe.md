@@ -1,4 +1,6 @@
-#Operation Extension
+#Operation Extension 
+[![Windows](https://ci.appveyor.com/api/projects/status/m4xei8kvod9fguqk/branch/master?svg=true)](https://ci.appveyor.com/project/odytrice/operation/branch/master)
+
 
 This Library defines an Abstraction for [Defensive Programming](http://en.wikipedia.org/wiki/Defensive_programming). 
 Its based on the [Monad](http://en.wikipedia.org/wiki/Monad_%28functional_programming%29) pattern.
