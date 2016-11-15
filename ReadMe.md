@@ -4,7 +4,7 @@
 
 This Library defines an Abstraction for [Defensive Programming](http://en.wikipedia.org/wiki/Defensive_programming). 
 Its based on the [Monad](http://en.wikipedia.org/wiki/Monad_%28functional_programming%29) pattern.
-Using the Operation Monad helps ensure that you applications can fail gracefully even in unforeseen circumstances.
+Using the Operation Monad helps ensure that your applications can fail gracefully even in unforeseen circumstances.
 Defensive Programming is not about hiding failures, Its about recognizing and embracing them. It's typically used at the boundries 
 between domains/layers in your application.eg. Between Calls from WebApi to Business Layer or between calls from your Business Layer to your DataAccess Layer
 
@@ -15,10 +15,10 @@ Programming with Purity
 
 ##Operation and Operation&lt;T&gt;
 At the Heart of the library are two types. They are `Operation` and `Operation<T>`. 
-An Operation represents the output of a piece of computation. It has two states: Success or Failure. To represent this, a boolean flag `Succeeded` tells you wether the computation succeeded or failed.
-It also contains an Error field that contains the complete Exception including the Stack trace and all.
+An Operation represents the output of a piece of computation. It has two states: Succeeded or Failed. To represent this, a boolean flag `Succeeded` tells you whether the computation succeeded or failed.
+It also contains a `GetException()` Method that returns the original Exception including Stack trace and all.
 It also contains a helpful message that states why the piece of computation failed. `Operation<T>` 
-also possesses a `Result` property that contains the Result of that Computation.
+includes a `Result` property that contains the Result of that Computation.
 
 ##Installation 
 You can install Operation library via Nuget:
