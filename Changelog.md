@@ -1,3 +1,7 @@
+Version 1.0.5
+-------------
+- Removed Support for IQueryable in Linq Syntax
+
 Version 1.0.4
 -------------
 - Added the ability to Mix IEnumerable with Operation in the Linq Syntax
