@@ -1,4 +1,8 @@
-#Operation Extension 
+
+
+<h1 style="vertical-align:middle">
+	<img src="https://raw.githubusercontent.com/odytrice/Operation/master/operation.png" width="25" alt="Logo"/> Operation Extension</h1>
+	
 [![Windows](https://ci.appveyor.com/api/projects/status/m4xei8kvod9fguqk/branch/master?svg=true)](https://ci.appveyor.com/project/odytrice/operation/branch/master)
 [![NuGet Operation](https://img.shields.io/nuget/v/Operation.svg?style=flat)](https://www.nuget.org/packages/Operation)
 
