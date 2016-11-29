@@ -16,3 +16,9 @@ if($task -eq "test"){
     dotnet test
     Pop-Location
 }
+
+if($task -eq "pack"){
+    Push-Location src/Operation
+    dotnet pack --configuration Release
+    Pop-Location
+}

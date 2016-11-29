@@ -74,7 +74,9 @@ namespace Tests
         {
             var list = new[] { 1, 2, 3 };
 
-            var query = from y in _op2
+            var query = from z in _op3
+                        from k in _op3
+                        from y in _op2
                         from x in list
                         select x + " " + y;
 
