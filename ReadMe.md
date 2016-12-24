@@ -7,7 +7,7 @@
 [![NuGet Operation](https://img.shields.io/nuget/v/Operation.svg?style=flat)](https://www.nuget.org/packages/Operation)
 
 This Library provides a way for doing [Railway Oriented Programming](http://fsharpforfunandprofit.com/rop/) in C#. Which is simply a way of encoding Errors into the Type System.  The `Operation` class is a contract
-that tells the calling method that it will not throw an exception rather, any exeptions generated will be available in `Operation` Object.
+that tells the calling method that it will not throw an exception rather, any exeptions generated will be available in the returned `Operation` object.
 
 Using `Operation` helps ensure that your applications can fail gracefully even in unforeseen circumstances. It's typically used at the boundries 
 between domains/layers in your application.eg. Between Calls from WebApi to Business Layer or between calls from your Business Layer to your DataAccess Layer
