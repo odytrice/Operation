@@ -54,6 +54,15 @@ namespace Tests
             Assert.AreEqual(allops.Message, _fail.Message);
         }
 
+        [TestMethod]
+        public void LinqOperationTest()
+        {
+            var allOps = from o1 in _op1
+                         from o2 in _op2
+                         select o2;
+            Assert.IsTrue(allOps.Succeeded);
+        }
+
 
         [TestMethod]
         public void LinqWithEnumerableFirst()

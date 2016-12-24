@@ -38,6 +38,38 @@ namespace System
         }
 
         [DebuggerHidden]
+        public static Operation<U> Select<T, U>(this Operation<T> operation, Func<T, U> process)
+        {
+            return OperationExtensions.Next(operation, process);
+        }
+        
+        //Linq with Operation
+        [DebuggerHidden]
+        public static Operation<U> SelectMany<T, U>(this Operation operation, Func<object, Operation<T>> process, Func<object, T, U> projection)
+        {
+            var op1 = new Operation<object>(operation.GetException())
+            {
+                Message = operation.Message,
+                Result = null,
+                Succeeded = operation.Succeeded
+            };
+            return SelectMany(op1, process, projection);
+        }
+
+        [DebuggerHidden]
+        public static Operation<T> Select<T>(this Operation operation, Func<object, T> process)
+        {
+            var op1 = new Operation<object>(operation.GetException())
+            {
+                Message = operation.Message,
+                Result = null,
+                Succeeded = operation.Succeeded
+            };
+            return OperationExtensions.Next(op1, process);
+        }
+
+        // Linq with IEnumerable
+        [DebuggerHidden]
         public static IEnumerable<V> SelectMany<T, U, V>(this Operation<T> operation, Func<T, IEnumerable<U>> process, Func<T, U, V> projection)
         {
             if (operation.Succeeded)
@@ -52,12 +84,6 @@ namespace System
         public static IEnumerable<Operation<V>> SelectMany<T, U, V>(this IEnumerable<T> operation, Func<T, Operation<U>> process, Func<T, U, V> projection)
         {
             return operation.Select(x => OperationExtensions.Next(process(x), u => projection(x, u)));
-        }
-
-        [DebuggerHidden]
-        public static Operation<U> Select<T, U>(this Operation<T> operation, Func<T, U> process)
-        {
-            return OperationExtensions.Next(operation, process);
         }
     }
 }
