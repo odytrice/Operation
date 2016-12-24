@@ -1,3 +1,7 @@
+Version 1.0.6
+-------------
+- Made Operation Compatible with Linq Syntax
+
 Version 1.0.5
 -------------
 - Removed Support for IQueryable in Linq Syntax

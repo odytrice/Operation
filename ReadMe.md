@@ -6,20 +6,17 @@
 [![Windows](https://ci.appveyor.com/api/projects/status/m4xei8kvod9fguqk/branch/master?svg=true)](https://ci.appveyor.com/project/odytrice/operation/branch/master)
 [![NuGet Operation](https://img.shields.io/nuget/v/Operation.svg?style=flat)](https://www.nuget.org/packages/Operation)
 
-This Library defines an Abstraction for [Defensive Programming](http://en.wikipedia.org/wiki/Defensive_programming). 
-Its based on the [Monad](http://en.wikipedia.org/wiki/Monad_%28functional_programming%29) pattern.
-Using the Operation Monad helps ensure that your applications can fail gracefully even in unforeseen circumstances.
-Defensive Programming is not about hiding failures, Its about recognizing and embracing them. It's typically used at the boundries 
+This Library provides a way for doing [Railway Oriented Programming](http://fsharpforfunandprofit.com/rop/) in C#. Which is simply a way of encoding Errors into the Type System.  The `Operation` class is a contract
+that tells the calling method that it will not throw an exception rather, any exeptions generated will be available in `Operation` Object.
+
+Using `Operation` helps ensure that your applications can fail gracefully even in unforeseen circumstances. It's typically used at the boundries 
 between domains/layers in your application.eg. Between Calls from WebApi to Business Layer or between calls from your Business Layer to your DataAccess Layer
 
-For more information about the `Monad` pattern, Checkout this Talk by Ben Albahari about Programming with Purity
-
-[![Programming with Purity](http://img.youtube.com/vi/aZCzG2I8Hds/mqdefault.jpg)](http://www.youtube.com/watch?v=aZCzG2I8Hds)<br/>
-Programming with Purity
-
 ##Operation and Operation&lt;T&gt;
+
 At the Heart of the library are two types. They are `Operation` and `Operation<T>`. 
-An Operation represents the output of a piece of computation. It has two states: Succeeded or Failed. To represent this, a boolean flag `Succeeded` tells you whether the computation succeeded or failed.
+An Operation represents the output of a piece of computation. It has two states: Succeeded or Failed. 
+To represent this, a boolean flag `Succeeded` tells you whether the computation succeeded or failed.
 It also contains a `GetException()` Method that returns the original Exception including Stack trace and all.
 It also contains a helpful message that states why the piece of computation failed. `Operation<T>` 
 includes a `Result` property that contains the Result of that Computation.
@@ -27,19 +24,21 @@ includes a `Result` property that contains the Result of that Computation.
 ##Installation 
 You can install Operation library via Nuget:
 
-<code>install-package Operation</code>
+`install-package Operation`
 
 ##Features
 ###1. Fault Tolerance
 
 ```csharp
-public void ErrorProneFunction()
+public Operation ErrorProneFunction()
 {
-	//Doing Some Stuff
-	throw new Exception("Halt and Catch Fire");
+	return Operation.Create(() => {
+		//Doing Some Dangerous Stuff
+		throw new Exception("Halt and Catch Fire");
+	});
 }
 
-var operation = Operation.Create(ErrorProneFunction);
+var operation = ErrorProneFunction()
 var suceeded = operation.Succeeded //False
 var message = operation.Message    //Halt and Catch Fire
 ```
@@ -78,7 +77,7 @@ var result = compoundOp.Result;	     // "10 CUPS"
 
 ###3. Linq Syntax
 
-The `Operation<T>` also allows you chain operations using Linq query syntax. This makes the flow of execution clearer. 
+You can also chain operations using Linq query syntax. This makes the flow of execution clearer. 
     It also allows you to easily combine the interim results of operations as shown below
 
 ```csharp
@@ -99,6 +98,9 @@ the result of `operation3`. And of course the final operation would only be succ
 if the entire computation worked without a hitch. Otherwise the Error and Message for the 
 faulty function would be returned.
 This should simplify chaining combining the results across operations.
+
+*NOTE* - Using the LINQ Syntax with `Operation` returns `null`. 
+Trying to access its properties will produce an null reference exception that won't be caught
 
 ###4. Batch Operations
 The linq syntax is also extended to allow you to mix Linq Queries with Operation Queries. 
