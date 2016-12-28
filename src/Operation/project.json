@@ -1,5 +1,5 @@
 {
-  "version": "1.0.5-*",
+  "version": "1.0.6-*",
 
   "authors": [ "Ody Mbegbu" ],
   "description": "This Library defines an abstraction for Defensive Programming. Its based on the Monad pattern. Using the Operation Monad helps ensure that you applications can fail gracefully even in unforseen circumstances.",
