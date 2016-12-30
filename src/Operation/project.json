@@ -1,8 +1,8 @@
 {
-  "version": "1.0.6-*",
+  "version": "1.0.7-*",
 
   "authors": [ "Ody Mbegbu" ],
-  "description": "This Library defines an abstraction for Defensive Programming. Its based on the Monad pattern. Using the Operation Monad helps ensure that you applications can fail gracefully even in unforseen circumstances.",
+  "description": "This Library provides a way for doing Railway Oriented Programming in C#. Which is simply a way of encoding Errors into the Type System. The Operation class is a contract that tells the calling method that it will not throw an exception rather, any exceptions generated will be available in the returned Operation object.",
   "title": "Operation Extensions",
   "packOptions": {
     "projectUrl": "https://github.com/odytrice/operation",
