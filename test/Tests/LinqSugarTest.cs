@@ -55,7 +55,7 @@ namespace Tests
         }
 
         [TestMethod]
-        public void LinqOperationTest()
+        public void LinqOperationFirstTest()
         {
             var allOps = from o1 in _op1
                          from o2 in _op2
@@ -63,6 +63,14 @@ namespace Tests
             Assert.IsTrue(allOps.Succeeded);
         }
 
+        [TestMethod]
+        public void LinqOperationSecondTest()
+        {
+            var allOps = from o1 in _op2
+                         from o2 in _op1
+                         select o2;
+            Assert.IsTrue(allOps.Succeeded);
+        }
 
         [TestMethod]
         public void LinqWithEnumerableFirst()

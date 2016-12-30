@@ -57,6 +57,34 @@ namespace System
         }
 
         [DebuggerHidden]
+        public static Operation<U> SelectMany<T, U>(this Operation<T> operation, Func<T, Operation> process, Func<T, object, U> projection)
+        {
+            if (operation.Succeeded)
+            {
+                var op2 = process(operation.Result);
+                if (op2.Succeeded)
+                {
+                    return Operation.Create(() => projection(operation.Result, null));
+                }
+                else
+                {
+                    return new Operation<U>(op2.GetException())
+                    {
+                        Succeeded = false,
+                        Message = op2.Message,
+                        Result = default(U)
+                    };
+                }
+            }
+            return new Operation<U>(operation.GetException())
+            {
+                Succeeded = false,
+                Result = default(U),
+                Message = operation.Message,
+            };
+        }
+
+        [DebuggerHidden]
         public static Operation<T> Select<T>(this Operation operation, Func<object, T> process)
         {
             var op1 = new Operation<object>(operation.GetException())
