@@ -1,3 +1,7 @@
+Version 1.0.7
+-------------
+- Added Support for Linq sytnax from Operation<T> to Operation
+
 Version 1.0.6
 -------------
 - Made Operation Compatible with Linq Syntax
