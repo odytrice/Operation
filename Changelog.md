@@ -1,3 +1,7 @@
+Version 1.0.8
+-------------
+- Fixes IEnumerable Interaction with Operation
+
 Version 1.0.7
 -------------
 - Added Support for Linq sytnax from Operation<T> to Operation
