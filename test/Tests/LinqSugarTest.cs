@@ -91,14 +91,12 @@ namespace Tests
         {
             var list = new[] { 1, 2, 3 };
 
-            var query = from z in _op3
-                        from k in _op3
-                        from y in _op2
+            var query = from y in _op2
                         from x in list
                         select x + " " + y;
 
             var expected = new[] { "1 Resulting String", "2 Resulting String", "3 Resulting String" };
-            var result = query.ToArray();
+            var result = query.Result.ToArray();
             Assert.IsTrue(expected.SequenceEqual(result));
         }
 

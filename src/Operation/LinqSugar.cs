@@ -56,24 +56,13 @@ namespace System
 
         [DebuggerHidden]
         public static Operation<U> SelectMany<T, U>(this Operation<T> operation, Func<T, Operation> process, Func<T, object, U> projection)
-        {
+        {            
             if (operation.Succeeded)
             {
                 var op2 = process(operation.Result);
-                if (op2.Succeeded)
-                {
-                    return Operation.Create(() => projection(operation.Result, null));
-                }
-                else
-                {
-                    return new Operation<U>(op2.GetException())
-                    {
-                        Succeeded = false,
-                        Message = op2.Message,
-                        Result = default(U)
-                    };
-                }
+                return op2.Next(() => projection(operation.Result, null));
             }
+
             return new Operation<U>(operation.GetException())
             {
                 Succeeded = false,
@@ -96,14 +85,19 @@ namespace System
 
         // Linq with IEnumerable
         [DebuggerHidden]
-        public static IEnumerable<V> SelectMany<T, U, V>(this Operation<T> operation, Func<T, IEnumerable<U>> process, Func<T, U, V> projection)
+        public static Operation<IEnumerable<V>> SelectMany<T, U, V>(this Operation<T> operation, Func<T, IEnumerable<U>> process, Func<T, U, V> projection)
         {
             if (operation.Succeeded)
             {
-                var op2 = process(operation.Result);
-                return op2.Select(x => projection(operation.Result, x));
+                var op2 = Operation.Create(() => process(operation.Result));
+                 return op2.Next((enumerable) => enumerable.Select(x => projection(operation.Result, x)));
             }
-            return new V[0];
+            return new Operation<IEnumerable<V>>(operation.GetException())
+            {
+                Succeeded = false,
+                Result = default(IEnumerable<V>),
+                Message = operation.Message
+            };
         }
 
         [DebuggerHidden]
