@@ -32,10 +32,10 @@ You can install Operation library via Nuget:
 ```csharp
 public Operation ErrorProneFunction()
 {
-	return Operation.Create(() => {
-		//Doing Some Dangerous Stuff
-		throw new Exception("Halt and Catch Fire");
-	});
+    return Operation.Create(() => {
+    	//Doing Some Dangerous Stuff
+    	throw new Exception("Halt and Catch Fire");
+    });
 }
 
 var operation = ErrorProneFunction()
@@ -52,8 +52,8 @@ Func<int, string> ErrorFunction2 = x => x + " Cups";
 Func<string, string> ErrorFunction3 = s => s.ToUpper();
 
 var compoundOp = Operation.Create(ErrorFunction1)
-						  .Next(ErrorFunction2)
-						  .Next(ErrorFunction3);
+			  .Next(ErrorFunction2)
+			  .Next(ErrorFunction3);
 							  
 var suceeded = compoundOp.Succeeded //Only Returns True if all 3 operations Succeeded
 ```
@@ -67,8 +67,8 @@ Func<int, string> ErrorFunction2 = x => x + " Cups";
 Func<string, string> ErrorFunction3 = s => s.ToUpper();
 
 var compoundOp = Operation.Create(() => ErrorFunction1())
-						  .Next(r1 => ErrorFunction2(r1))
-						  .Next(r2 => ErrorFunction3(r2));
+			  .Next(r1 => ErrorFunction2(r1))
+			  .Next(r2 => ErrorFunction3(r2));
 						  							  
 var suceeded = compoundOp.Succeeded; // Only Returns True if all 3 operations Succeeded
 var result = compoundOp.Result;	     // "10 CUPS"
@@ -86,10 +86,10 @@ var operation2 = Operation.Create(() => 12);
 var operation3 = Operation.Create(() => 3);
 
 var operation = from res1 in operation1
-				from res2 in operation2
-				select res1 + res2 into temp
-				from res3 in operation3
-				select temp - res3;
+		from res2 in operation2
+		select res1 + res2 into temp
+		from res3 in operation3
+		select temp - res3;
 
 var result = operation.Unwrap(); // 19 or throws an Exception if any of the Operations failed
 ```
@@ -112,8 +112,8 @@ var list = new []{ 1 , 2, 3 };
 var op = Operation.Create(() => "Resulting String");
 
 var query = from x in list
-			from y in op
-			select x + " " + y;
+	    from y in op
+	    select x + " " + y;
 
 var result = query.Select(r => r.Result).ToArray(); //["1 Resulting String", "2 Resulting String", "3 Resulting String"]
 ```
@@ -127,9 +127,9 @@ var op1 = Operation.Create(() => "First");
 var op2 = Operation.Create(() => "Second")
 
 var query = from x in op1
-			from y in op2
-			from z in list
-			select x + " " + y + " " + z;
+	    from y in op2
+	    from z in list
+	    select x + " " + y + " " + z;
 
 var result = query.ToArray(); //["1 First Second", "2 First Second", "3 First Second"]
 ```
@@ -152,11 +152,11 @@ and it halts exectuion and raises the error for the main operation to catch.
 
 ```csharp
 var operation = Operation.Create(() => {
-	var dependedOp = DependentOp();	//Returns an Operation
+    var dependedOp = DependentOp();	//Returns an Operation
 		
-	dependedOp.Unwrap(); //Throws an Exception up if the the Operation did not succeed
-	dependedOp.Unwrap("Simpler Error Message");
-	dependedOp.Unwrap(e => "Simpler Error Message: " + e);
+    dependedOp.Unwrap(); //Throws an Exception up if the the Operation did not succeed
+    dependedOp.Unwrap("Simpler Error Message");
+    dependedOp.Unwrap(e => "Simpler Error Message: " + e);
 });
 ```
 The `Unwrap()` method also serves to unwrap the `Operation` object into its constituent 
@@ -171,18 +171,18 @@ clean way
 
 ```csharp
 var operation = Operation.Create(() => {
-	var dependentOp = DependentOp();  	//Returns Operation<int>
-	int result = dependedOp.Unwrap();
-	return result + 2;					//Runs only if dependedOp was successful.
+    var dependentOp = DependentOp();  	//Returns Operation<int>
+    int result = dependedOp.Unwrap();
+    return result + 2;			//Runs only if dependedOp was successful.
 });
 ```
 
 ###6. Async Support
 ```csharp
 Task<Operation<T>> asyncOp = Operation.Run(async () => {
-	var result = await SomeLongRunningProcess();
-	//Do Other Stuff
-	return result;
+    var result = await SomeLongRunningProcess();
+    //Do Other Stuff
+    return result;
 });
 	
 
