@@ -101,7 +101,7 @@ namespace System
         }
 
         [DebuggerHidden]
-        public static IEnumerable<Operation<V>> SelectMany<T, U, V>(this IEnumerable<T> operation, Func<T, Operation<U>> process, Func<T, U, V> projection)
+        private static IEnumerable<Operation<V>> SelectMany<T, U, V>(this IEnumerable<T> operation, Func<T, Operation<U>> process, Func<T, U, V> projection)
         {
             return operation.Select(x => OperationExtensions.Next(process(x), u => projection(x, u)));
         }

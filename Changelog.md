@@ -1,3 +1,9 @@
+Version 1.0.9
+-------------
+- Moved away from project.json to csproj
+- Removed IEnumerable<T> extensions
+- Lowered NetStandard to 1.1 for widest reach
+
 Version 1.0.8
 -------------
 - Fixes IEnumerable Interaction with Operation

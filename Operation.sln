@@ -1,22 +1,21 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26114.2
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{28601411-6B83-4FE5-8DD0-F6A9C60559C1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{139E940F-CEEE-42C5-A627-C5E2CF9DCBBB}"
 	ProjectSection(SolutionItems) = preProject
 		Changelog.md = Changelog.md
-		global.json = global.json
 		ReadMe.md = ReadMe.md
 	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Operation", "src\Operation\Operation.xproj", "{19B61102-2672-4429-96C8-D60FAEA34A88}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Operation", "src\Operation\Operation.csproj", "{19B61102-2672-4429-96C8-D60FAEA34A88}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{497C936C-DAFA-4A50-9B9F-0CB02D6AD26F}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Tests", "test\Tests\Tests.xproj", "{7E284F74-CED3-41C3-B109-839D41ADFA81}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "test\Tests\Tests.csproj", "{7E284F74-CED3-41C3-B109-839D41ADFA81}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
