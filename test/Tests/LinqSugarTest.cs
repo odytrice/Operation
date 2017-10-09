@@ -75,7 +75,7 @@ namespace Tests
         [TestMethod]
         public void LinqWithEnumerableFirst()
         {
-            var list = new[] { 1, 2, 3 };
+            var list = new[] { 1, 2, 3 }.Select(x => x.ToString());
 
             var query = from x in list
                         from y in _op2
@@ -131,9 +131,9 @@ namespace Tests
         public void OperationNextFailed()
         {
             //Act
-            var ops1 = _op1.Next(() => _fail).Next((op) => _op3);
-            var ops2 = _op2.Next((op) => _fail).Next(() => _op1);
-            var ops3 = _op2.Next((op) => _op1).Next(() => _fail);
+            var ops1 = _op1.Next(() => _fail).Next(op => _op3);
+            var ops2 = _op2.Next(op => _fail).Next(op => _op1);
+            var ops3 = _op2.Next(op => _op1).Next(() => _fail);
 
             //Assert
             Assert.IsFalse(ops1.Succeeded);

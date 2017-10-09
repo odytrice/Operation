@@ -94,13 +94,57 @@ namespace System
             }
             return operation;
         }
+
+        public static Operation Success() => Success<object>(null);
+
+        public static Operation<T> Success<T>(T result)
+        {
+            return new Operation<T>
+            {
+                Result = result,
+                Succeeded = true
+            };
+        }
+
+        public static Operation Fail(string message) => Fail<object>(message);
+
+        public static Operation<T> Fail<T>(string message)
+        {
+            var exception = new Exception(message);
+
+            return new Operation<T>(exception)
+            {
+                Message = message,
+                Result = default(T),
+                Succeeded = false,
+            };
+        }
+    }
+
+    public partial class Operation<T>
+    {
         [DebuggerHidden]
         public void Catch(Exception ex)
         {
             _exception = ex;
             while (ex.InnerException != null) ex = ex.InnerException;
-            this.Succeeded = false;
-            this.Message = ex.Message;
+            Succeeded = false;
+            Message = ex.Message;
+        }
+
+
+        /// <summary>
+        /// Implicit Downgrade of 'T Operation to object Operation
+        /// </summary>
+        /// <param name="operation"></param>
+        public static implicit operator Operation(Operation<T> operation)
+        {
+            return new Operation(operation.GetException())
+            {
+                Message = operation.Message,
+                Result = operation.Result,
+                Succeeded = operation.Succeeded
+            };
         }
     }
 

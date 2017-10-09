@@ -87,5 +87,27 @@ namespace Tests
             Assert.IsFalse(task.Result.Succeeded);
             Assert.AreEqual(task.Result.Message, "The Error");
         }
+
+        [TestMethod]
+        public void OperationFail()
+        {
+            var message = "Evil Error";
+            var op1 = Operation.Fail(message);
+            var op2 = Operation.Fail<int>(message);
+
+            Assert.AreEqual(message, op1.Message);
+            Assert.AreEqual(default(int), op2.Result);
+        }
+
+        [TestMethod]
+        public void OperationSuccess()
+        {
+            var op1 = Operation.Success();
+            var op2 = Operation.Success(1000);
+
+            Assert.IsTrue(op1.Succeeded);
+            Assert.IsTrue(op2.Succeeded);
+            Assert.AreEqual(1000, op2.Result);
+        }
     }
 }

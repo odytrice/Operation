@@ -59,7 +59,7 @@ namespace Tests
         {
             //Act
             var ops1 = _op1.Next(() => _fail).Next((op) => _op3);
-            var ops2 = _op2.Next((op) => _fail).Next(() => _op1);
+            var ops2 = _op2.Next((op) => _fail).Next(op => _op1);
             var ops3 = _op2.Next((op) => _op1).Next(() => _fail);
 
             //Assert

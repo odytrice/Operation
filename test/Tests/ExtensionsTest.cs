@@ -62,13 +62,13 @@ namespace Tests
             var op2 = Operation.Create(() =>
             {
                 var condition = true;      //Prevent "Unreachable Code Detected"
-                if(condition) throw new Exception("Something Bad Happened");
+                if (condition) throw new Exception("Something Bad Happened");
                 return "";
             });
 
             var all = new[] { op1, op2 }.Fold((a, s) => a + " " + s);
 
-            
+
             Assert.IsNull(all.Result);
             Assert.IsFalse(all.Succeeded);
             Assert.AreEqual("Something Bad Happened", all.Message);
@@ -81,7 +81,7 @@ namespace Tests
             var op1 = Operation.Create(() => "Hello");
             var op2 = Operation.Create(() => "World");
 
-            var all = new[] { op1, op2 }.Fold();
+            var all = new[] { op1, op2 }.Fold((ag, e) => ag + " " + e);
 
             Assert.IsTrue(all.Succeeded);
         }
@@ -93,11 +93,11 @@ namespace Tests
             var op2 = Operation.Create(() =>
             {
                 var condition = true;      //Prevent "Unreachable Code Detected"
-                if(condition) throw new Exception("Something Bad Happened");
+                if (condition) throw new Exception("Something Bad Happened");
                 return "";
             });
 
-            var all = new[] { op1, op2 }.Fold();
+            var all = new[] { op1, op2 }.Fold((ag, e) => ag + " " + e);
 
             Assert.IsFalse(all.Succeeded);
             Assert.AreEqual("Something Bad Happened", all.Message);

@@ -175,7 +175,7 @@ namespace System
                     };
                 }
 
-                List<Operation> badOperations = new List<Operation>();
+                List<Operation<T>> badOperations = new List<Operation<T>>();
 
                 //Process First Element
                 var result = default(T);
@@ -245,48 +245,48 @@ namespace System
         }
 
 
-        public static Operation Fold(this IEnumerable<Operation> operations)
-        {
-            using (var e = operations.GetEnumerator())
-            {
-                if (!e.MoveNext())
-                {
-                    var ex = new InvalidOperationException("Sequence contains no Elements");
-                    return new Operation(ex)
-                    {
-                        Message = ex.Message,
-                    };
-                }
+        //public static Operation Fold(this IEnumerable<Operation> operations)
+        //{
+        //    using (var e = operations.GetEnumerator())
+        //    {
+        //        if (!e.MoveNext())
+        //        {
+        //            var ex = new InvalidOperationException("Sequence contains no Elements");
+        //            return new Operation(ex)
+        //            {
+        //                Message = ex.Message,
+        //            };
+        //        }
 
-                List<Operation> badOperations = new List<Operation>();
-                do
-                {
-                    //If the Current Operation did not succeed, add it
-                    if (!e.Current.Succeeded)
-                    {
-                        badOperations.Add(e.Current);
-                    };
-                }
-                while (e.MoveNext());
+        //        List<Operation> badOperations = new List<Operation>();
+        //        do
+        //        {
+        //            //If the Current Operation did not succeed, add it
+        //            if (!e.Current.Succeeded)
+        //            {
+        //                badOperations.Add(e.Current);
+        //            };
+        //        }
+        //        while (e.MoveNext());
 
 
-                //If there were any bad operations
-                if (badOperations.Any())
-                {
-                    return new Operation
-                    {
-                        Message = badOperations.Select(o => o.Message).Aggregate((ag, m) => ag + ", " + m),
-                        Succeeded = false
-                    };
-                }
-                else
-                {
-                    return new Operation()
-                    {
-                        Succeeded = true,
-                    };
-                }
-            }
-        }
+        //        //If there were any bad operations
+        //        if (badOperations.Any())
+        //        {
+        //            return new Operation
+        //            {
+        //                Message = badOperations.Select(o => o.Message).Aggregate((ag, m) => ag + ", " + m),
+        //                Succeeded = false
+        //            };
+        //        }
+        //        else
+        //        {
+        //            return new Operation()
+        //            {
+        //                Succeeded = true,
+        //            };
+        //        }
+        //    }
+        //}
     }
 }
