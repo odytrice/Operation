@@ -8,14 +8,29 @@ namespace Tests
 {
     public class Methods
     {
-        public void Print()
+        public void Void()
         {
-            Console.WriteLine("Hello Operation");
+            //Does nothing
         }
 
         public int ReturnInt()
         {
             return 1;
+        }
+
+        public void TakeInt(int x)
+        {
+
+        }
+
+        public int TakeAndReturnInt(int x)
+        {
+            return x;
+        }
+
+        public void TakeObject(object o)
+        {
+
         }
     }
 }

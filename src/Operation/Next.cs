@@ -13,44 +13,22 @@ namespace System
         [DebuggerHidden]
         public static Operation Next(this Operation operation, Action process)
         {
-            if (operation.Succeeded)
-                return Operation.Create(process);
-            return operation;
+            return operation.Map(process);
         }
         [DebuggerHidden]
         public static Operation<T> Next<T>(this Operation operation, Func<T> process)
         {
-            if (operation.Succeeded)
-                return Operation.Create(process);
-            return new Operation<T>(operation.GetException())
-            {
-                Succeeded = false,
-                Result = default(T),
-                Message = operation.Message,
-            };
+            return operation.Map(process);
         }
         [DebuggerHidden]
         public static Operation Next<T>(this Operation<T> operation, Action<T> process)
         {
-            if (operation.Succeeded)
-                return Operation.Create(() => process(operation.Result));
-            return new Operation()
-            {
-                Message = operation.Message,
-                Succeeded = operation.Succeeded,
-            };
+            return operation.Map(process);
         }
         [DebuggerHidden]
         public static Operation<U> Next<T, U>(this Operation<T> operation, Func<T, U> process)
         {
-            if (operation.Succeeded)
-                return Operation.Create(() => process(operation.Result));
-            return new Operation<U>(operation.GetException())
-            {
-                Succeeded = false,
-                Result = default(U),
-                Message = operation.Message
-            };
+            return operation.Map(process);
         }
         #endregion
 
@@ -58,43 +36,25 @@ namespace System
         [DebuggerHidden]
         public static Operation Next(this Operation operation, Func<Operation> process)
         {
-            if (operation.Succeeded)
-                return process();
-            return operation;
+            return operation.Bind(process);
         }
 
         [DebuggerHidden]
         public static Operation<T> Next<T>(this Operation operation, Func<Operation<T>> process)
         {
-            if (operation.Succeeded)
-                return process();
-            return new Operation<T>(operation.GetException())
-            {
-                Succeeded = false,
-                Result = default(T),
-                Message = operation.Message
-            };
+            return operation.Bind(process);
         }
 
         [DebuggerHidden]
         public static Operation Next<T>(this Operation<T> operation, Func<T, Operation> process)
         {
-            if (operation.Succeeded)
-                return process(operation.Result);
-            return operation;
+            return operation.Bind(process);
         }
 
         [DebuggerHidden]
         public static Operation<U> Next<T, U>(this Operation<T> operation, Func<T, Operation<U>> process)
         {
-            if (operation.Succeeded)
-                return process(operation.Result);
-            return new Operation<U>(operation.GetException())
-            {
-                Succeeded = false,
-                Result = default(U),
-                Message = operation.Message
-            };
+            return operation.Bind(process);
         }
         #endregion
     }

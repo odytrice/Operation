@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Tests
 {
     [TestClass]
-    public class AsyncTests
+    public class TaskTests
     {
         [TestMethod]
         public void AsyncOperationCreationSuccess()

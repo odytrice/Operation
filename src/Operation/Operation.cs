@@ -46,5 +46,19 @@ namespace System
         {
             _exception = ex;
         }
+
+        /// <summary>
+        /// Implicit Downgrade of 'T Operation to object Operation
+        /// </summary>
+        /// <param name="operation"></param>
+        public static implicit operator Operation(Operation<T> operation)
+        {
+            return new Operation(operation.GetException())
+            {
+                Message = operation.Message,
+                Result = operation.Result,
+                Succeeded = operation.Succeeded
+            };
+        }
     }
 }

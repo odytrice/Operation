@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 namespace Tests
 {
     [TestClass]
-    public class LinqSugarTest
+    public class LinqTests
     {
         private Operation _op1;
         private Operation<string> _op2;
         private Operation<DateTime> _op3;
         private Operation<string> _fail;
-        public LinqSugarTest()
+        public LinqTests()
         {
             _op1 = new Operation
             {
@@ -125,7 +125,7 @@ namespace Tests
             //Arrange
             var methods = new Methods();
             //Act
-            var allOps = Operation.Create(methods.Print).Next(() => methods.Print());
+            var allOps = Operation.Create(methods.Void).Next(() => methods.Void());
         }
         [TestMethod]
         public void OperationNextFailed()

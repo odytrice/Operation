@@ -9,24 +9,23 @@ namespace Tests
     /// Test Suite for Operation Unit Functions
     /// </summary>
     [TestClass]
-    public class UnitTest
+    public class CreateTests
     {
         private Methods _methods;
-        public UnitTest()
+        public CreateTests()
         {
             _methods = new Methods();
         }
 
         [TestMethod]
-        public void OperationCreationSuccess()
+        public void CreateSuccess()
         {
-            var operation = Operation.Create(_methods.Print);
-
+            var operation = Operation.Create(_methods.Void);
             Assert.IsTrue(operation.Succeeded);
         }
 
         [TestMethod]
-        public void OperationCreationFailure()
+        public void CreateFailure()
         {
             var operation = Operation.Create(() =>
             {
@@ -38,16 +37,51 @@ namespace Tests
         }
 
         [TestMethod]
-        public void OperationResult()
+        public void CreateBindSuccess()
         {
-            var operation = Operation.Create<int>(_methods.ReturnInt);
+            var operation = Operation.CreateBind(() =>
+            {
+                return Operation.Success(3);
+            });
+
+            Assert.IsTrue(operation.Succeeded);
+            Assert.AreEqual(3, operation.Result);
+        }
+
+        [TestMethod]
+        public void CreateBindFailure()
+        {
+            var operation = Operation.CreateBind(() => Operation.Fail("An Error Occured"));
+
+            Assert.IsFalse(operation.Succeeded);
+            Assert.AreEqual("An Error Occured", operation.Message);
+        }
+
+        [TestMethod]
+        public void CreateBindCatchesExceptions()
+        {
+            var operation = Operation.CreateBind(() =>
+            {
+                var x = true;
+                if (x) throw new Exception("Some Error");
+                return Operation.Success(2);
+            });
+
+            Assert.IsFalse(operation.Succeeded);
+            Assert.AreEqual("Some Error", operation.Message);
+        }
+
+        [TestMethod]
+        public void CreateWithResult()
+        {
+            var operation = Operation.Create(_methods.ReturnInt);
 
             Assert.AreEqual(operation.Result, 1);
             Assert.IsTrue(operation.Succeeded);
         }
 
         [TestMethod]
-        public void OperationResultFailure()
+        public void CreateWithResultFailure()
         {
             var cond = true;
             var operation = Operation.Create(() =>
