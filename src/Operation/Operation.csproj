@@ -9,7 +9,7 @@
     <TargetFrameworks>netstandard1.1;net45</TargetFrameworks>
     <AssemblyName>Operation</AssemblyName>
     <PackageId>Operation</PackageId>
-    <PackageTags>Monad;Operation;Operation;Extensions;Exceptions</PackageTags>
+    <PackageTags>Railway Oriented Programming;ROP;Monad;Operation;Operation;Extensions;Exceptions</PackageTags>
     <PackageReleaseNotes>https://github.com/odytrice/Operation/blob/master/Changelog.md</PackageReleaseNotes>
     <PackageIconUrl>https://raw.githubusercontent.com/odytrice/Operation/master/operation.png</PackageIconUrl>
     <PackageProjectUrl>https://github.com/odytrice/operation</PackageProjectUrl>
