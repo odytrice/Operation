@@ -1,21 +1,22 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26114.2
+VisualStudioVersion = 15.0.27004.2006
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{28601411-6B83-4FE5-8DD0-F6A9C60559C1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{139E940F-CEEE-42C5-A627-C5E2CF9DCBBB}"
 	ProjectSection(SolutionItems) = preProject
+		appveyor.yml = appveyor.yml
+		build.ps1 = build.ps1
 		Changelog.md = Changelog.md
 		ReadMe.md = ReadMe.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Operation", "src\Operation\Operation.csproj", "{19B61102-2672-4429-96C8-D60FAEA34A88}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Operation", "src\Operation\Operation.csproj", "{19B61102-2672-4429-96C8-D60FAEA34A88}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{497C936C-DAFA-4A50-9B9F-0CB02D6AD26F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "test\Tests\Tests.csproj", "{7E284F74-CED3-41C3-B109-839D41ADFA81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "test\Tests\Tests.csproj", "{7E284F74-CED3-41C3-B109-839D41ADFA81}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,5 +39,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{19B61102-2672-4429-96C8-D60FAEA34A88} = {28601411-6B83-4FE5-8DD0-F6A9C60559C1}
 		{7E284F74-CED3-41C3-B109-839D41ADFA81} = {497C936C-DAFA-4A50-9B9F-0CB02D6AD26F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F43CD339-09EC-4B43-9B16-F187BA45327E}
 	EndGlobalSection
 EndGlobal

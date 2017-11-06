@@ -60,33 +60,7 @@ namespace Tests
             Assert.AreEqual(operation.Message, "The Error");
             Assert.AreEqual(operation.Result, default(int));
         }
-        [TestMethod]
-        public void AsyncOperationCreationSuccess()
-        {
-            var task = Operation.Run(async () =>
-            {
-                await Task.Run(() => Console.WriteLine("Hello Operation"));
-            });
 
-            task.Wait();
-
-            Assert.IsTrue(task.Result.Succeeded);
-        }
-
-        [TestMethod]
-        public void AsyncOperationCreationFailure()
-        {
-            var task = Operation.Run(async () =>
-            {
-                await Task.Run(() => Console.WriteLine("Hello Operation"));
-                throw new Exception("The Error");
-            });
-
-            task.Wait();
-
-            Assert.IsFalse(task.Result.Succeeded);
-            Assert.AreEqual(task.Result.Message, "The Error");
-        }
 
         [TestMethod]
         public void OperationFail()

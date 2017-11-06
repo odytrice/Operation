@@ -102,5 +102,13 @@ namespace Tests
             Assert.IsFalse(all.Succeeded);
             Assert.AreEqual("Something Bad Happened", all.Message);
         }
+
+        [TestMethod]
+        public void CatchT()
+        {
+            var message = "";
+            var op1 = Operation.Fail("An Error").Catch(o => message = o.Message);
+            Assert.AreEqual("An Error", message);
+        }
     }
 }

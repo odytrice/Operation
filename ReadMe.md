@@ -12,7 +12,7 @@ that tells the calling method that it will not throw an exception rather, any ex
 Using `Operation` helps ensure that your applications can fail gracefully even in unforeseen circumstances. It's typically used at the boundries 
 between domains/layers in your application.eg. Between Calls from WebApi to Business Layer or between calls from your Business Layer to your DataAccess Layer
 
-##Operation and Operation&lt;T&gt;
+## Operation and Operation&lt;T&gt;
 
 At the Heart of the library are two types. They are `Operation` and `Operation<T>`. 
 An Operation represents the output of a piece of computation. It has two states: Succeeded or Failed. 
@@ -21,13 +21,13 @@ It also contains a `GetException()` Method that returns the original Exception i
 It also contains a helpful message that states why the piece of computation failed. `Operation<T>` 
 includes a `Result` property that contains the Result of that Computation.
 
-##Installation 
+## Installation 
 You can install Operation library via Nuget:
 
 `install-package Operation`
 
-##Features
-###1. Fault Tolerance
+## Features
+### 1. Fault Tolerance
 
 ```csharp
 public Operation ErrorProneFunction()
@@ -42,8 +42,13 @@ var operation = ErrorProneFunction()
 var suceeded = operation.Succeeded //False
 var message = operation.Message    //Halt and Catch Fire
 ```
+There are also helper functions for creating Operation Objects
+```csharp
+Operation<int> succeededOperation = Operation.Success(20);	//Returns a Successful Operation<int>
+Operation failedOperation = Operation.Fail("Error Here");	//Returns a Failed Operation with the Corresponding Page
+```
 
-###2. Operation Chaining
+### 2. Operation Chaining
 You can chain multiple Operations together to produce a compound Operation
 
 ```csharp
@@ -75,7 +80,14 @@ var result = compoundOp.Result;	     // "10 CUPS"
 ```
 `r1` and `r2` are the return values of `ErrorFunction1` and `ErrorFunction2` respectively.
 
-###3. Linq Syntax
+If the Operation did not succeed, you can chain an error
+
+```csharp
+var failed = Operation.Fail("Error Occured");
+failed.Catch(o => Console.WriteLine(o.Message));
+```
+
+### 3. Linq Syntax
 
 You can also chain operations using Linq query syntax. This makes the flow of execution clearer. 
     It also allows you to easily combine the interim results of operations as shown below
@@ -102,7 +114,7 @@ This should simplify chaining combining the results across operations.
 *NOTE* - Using the LINQ Syntax with `Operation` returns `null`. 
 Trying to access its properties will produce an null reference exception that won't be caught
 
-###4. Batch Operations
+### 4. Batch Operations
 The linq syntax is also extended to allow you to mix Linq Queries with Operation Queries. 
 This is useful for doing batch operations in a safe way
 
@@ -145,7 +157,7 @@ var all = new[] { op1, op2 }.Fold((a, s) => a + " " + s);
 var succeeded = all.Succeeded;	//true 
 var result = all.Result;		//"Hello World"
 ```
-###5. Operation Dependency
+### 5. Operation Dependency
 
 If an Operation depends on another operation, you simply call the `Unwrap()` method on the dependent Operation
 and it halts exectuion and raises the error for the main operation to catch.
@@ -177,7 +189,7 @@ var operation = Operation.Create(() => {
 });
 ```
 
-###6. Async Support
+### 6. Async Support
 ```csharp
 Task<Operation<T>> asyncOp = Operation.Run(async () => {
     var result = await SomeLongRunningProcess();
@@ -191,7 +203,7 @@ var message = asyncOp.Result.Message	//Returns the message of the
 var result = asyncOp.Result.Result		//Result of SomeLongRunningProcess() 
 ```
 
-###7. Conversion
+### 7. Conversion
 Its also easy to Convert Operations to Tasks for APIs that Require Tasks
 
 ```csharp

@@ -74,7 +74,7 @@ namespace System
         }
 
         /// <summary>
-        /// Creates an new Operation by Invoking an Async Delegate
+        /// Creates a new Operation by Invoking an Async Delegate
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="process"></param>
@@ -124,7 +124,7 @@ namespace System
     public partial class Operation<T>
     {
         [DebuggerHidden]
-        public void Catch(Exception ex)
+        internal void Catch(Exception ex)
         {
             _exception = ex;
             while (ex.InnerException != null) ex = ex.InnerException;

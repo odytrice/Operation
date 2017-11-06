@@ -244,49 +244,13 @@ namespace System
             }
         }
 
-
-        //public static Operation Fold(this IEnumerable<Operation> operations)
-        //{
-        //    using (var e = operations.GetEnumerator())
-        //    {
-        //        if (!e.MoveNext())
-        //        {
-        //            var ex = new InvalidOperationException("Sequence contains no Elements");
-        //            return new Operation(ex)
-        //            {
-        //                Message = ex.Message,
-        //            };
-        //        }
-
-        //        List<Operation> badOperations = new List<Operation>();
-        //        do
-        //        {
-        //            //If the Current Operation did not succeed, add it
-        //            if (!e.Current.Succeeded)
-        //            {
-        //                badOperations.Add(e.Current);
-        //            };
-        //        }
-        //        while (e.MoveNext());
-
-
-        //        //If there were any bad operations
-        //        if (badOperations.Any())
-        //        {
-        //            return new Operation
-        //            {
-        //                Message = badOperations.Select(o => o.Message).Aggregate((ag, m) => ag + ", " + m),
-        //                Succeeded = false
-        //            };
-        //        }
-        //        else
-        //        {
-        //            return new Operation()
-        //            {
-        //                Succeeded = true,
-        //            };
-        //        }
-        //    }
-        //}
+        public static Operation<T> Catch<T>(this Operation<T> operation, Action<Operation<T>> func)
+        {
+            if (!operation.Succeeded)
+            {
+                func(operation);
+            }
+            return operation;
+        }
     }
 }
