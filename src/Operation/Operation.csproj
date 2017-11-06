@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <Title>Operation Extensions</Title>
     <Description>This Library provides a way for doing Railway Oriented Programming in C#.</Description>
     <Summary>Which is simply a way of encoding Errors into the Type System. The Operation class is a contract that tells the calling method that it will not throw an exception rather, any exceptions generated will be available in the returned Operation object.</Summary>
     <AssemblyTitle>Operation Extensions</AssemblyTitle>
@@ -9,6 +10,9 @@
     <TargetFrameworks>netstandard1.1;net45</TargetFrameworks>
     <AssemblyName>Operation</AssemblyName>
     <PackageId>Operation</PackageId>
+    <DocumentationFile>
+      
+    </DocumentationFile>
     <PackageTags>Railway Oriented Programming;ROP;Monad;Operation;Operation;Extensions;Exceptions</PackageTags>
     <PackageReleaseNotes>https://github.com/odytrice/Operation/blob/master/Changelog.md</PackageReleaseNotes>
     <PackageIconUrl>https://raw.githubusercontent.com/odytrice/Operation/master/operation.png</PackageIconUrl>

@@ -1,7 +1,6 @@
 
-
-<h1 style="vertical-align:middle">
-	<img src="https://raw.githubusercontent.com/odytrice/Operation/master/operation.png" width="25" alt="Logo"/> Operation Extension</h1>
+[![Operation Logo](https://raw.githubusercontent.com/odytrice/Operation/master/operation.png)]
+# Operation Extension
 	
 [![Windows](https://ci.appveyor.com/api/projects/status/m4xei8kvod9fguqk/branch/master?svg=true)](https://ci.appveyor.com/project/odytrice/operation/branch/master)
 [![NuGet Operation](https://img.shields.io/nuget/v/Operation.svg?style=flat)](https://www.nuget.org/packages/Operation)
@@ -44,47 +43,65 @@ var message = operation.Message    //Halt and Catch Fire
 ```
 There are also helper functions for creating Operation Objects
 ```csharp
-Operation<int> succeededOperation = Operation.Success(20);	//Returns a Successful Operation<int>
-Operation failedOperation = Operation.Fail("Error Here");	//Returns a Failed Operation with the Corresponding Page
+//Returns a Successful Operation<int>
+Operation<int> succeededOperation = Operation.Success(20);	
+
+//Returns a Failed Operation with the Message "Error Here"
+Operation failedOperation = Operation.Fail("Error Here");
 ```
 
-### 2. Operation Chaining
-You can chain multiple Operations together to produce a compound Operation
+### 2. Operation Chaining 
+
+- `Map` allows you to take an Operation and transform it into another Operation. It allows you to chain more operations together
 
 ```csharp
-Func<int> ErrorFunction1 = x => 10;
-Func<int, string> ErrorFunction2 = x => x + " Cups";
-Func<string, string> ErrorFunction3 = s => s.ToUpper();
+int GetNumber(int x){
+    return 10;
+}
 
-var compoundOp = Operation.Create(ErrorFunction1)
-			  .Next(ErrorFunction2)
-			  .Next(ErrorFunction3);
-							  
-var suceeded = compoundOp.Succeeded //Only Returns True if all 3 operations Succeeded
+string AddCups(int x){
+    return x + " Cups";
+}
+
+string ToUpper(string s){
+    return s.ToUpper();
+}
+
+void Main(){
+    var compoundOp = Operation.Create(GetNumber)
+                              .Map(AddCups) //Adds "Cups"
+                              .Map(ToUpper); //Makes it UpperCase
+
+	//Only Returns True if all 3 operations Succeeded
+    var succeeded = compoundOp.Succeeded;
+}
 ```
 
-The Return values for Operations are passed on to the Next Functions if They accept parameters
+- `Bind` is just like map however It used to chaining multiple functions that return Operation.
 
 ```csharp
+//Get Random UserId from Database
+Operation<int> GetUserId(){
+    return Operation.Success(15);
+}
 
-Func<int> ErrorFunction1 = x => 10;
-Func<int, string> ErrorFunction2 = x => x + " Cups";
-Func<string, string> ErrorFunction3 = s => s.ToUpper();
+//Get User Name from the Database
+Operation<string>> getNameById(int i){
+    return Operation.Success("John Doe");
+}
 
-var compoundOp = Operation.Create(() => ErrorFunction1())
-			  .Next(r1 => ErrorFunction2(r1))
-			  .Next(r2 => ErrorFunction3(r2));
-						  							  
-var suceeded = compoundOp.Succeeded; // Only Returns True if all 3 operations Succeeded
-var result = compoundOp.Result;	     // "10 CUPS"
+void Main()
+{
+    //Get User Id and Then Get User's Name
+    var getUserName = GetUserId().Bind(i => GetNameById(i));
+}
 ```
-`r1` and `r2` are the return values of `ErrorFunction1` and `ErrorFunction2` respectively.
 
-If the Operation did not succeed, you can chain an error
+There are also helper functions that allow you to create Failed and Successful Operations easily
 
 ```csharp
-var failed = Operation.Fail("Error Occured");
-failed.Catch(o => Console.WriteLine(o.Message));
+Operation<int> failedOp = Operation.Fail<int>("Error Message");
+Operation<int> successOp = Operation.Success(10);
 ```
 
 ### 3. Linq Syntax
@@ -93,15 +110,15 @@ You can also chain operations using Linq query syntax. This makes the flow of ex
     It also allows you to easily combine the interim results of operations as shown below
 
 ```csharp
-var operation1 = Operation.Create(() => 10);
-var operation2 = Operation.Create(() => 12);
-var operation3 = Operation.Create(() => 3);
+var operation1 = Operation.Success(10);
+var operation2 = Operation.Success(12);
+var operation3 = Operation.Success(3);
 
 var operation = from res1 in operation1
-		from res2 in operation2
-		select res1 + res2 into temp
-		from res3 in operation3
-		select temp - res3;
+                from res2 in operation2
+                select res1 + res2 into temp
+                from res3 in operation3
+                select temp - res3;
 
 var result = operation.Unwrap(); // 19 or throws an Exception if any of the Operations failed
 ```
@@ -121,7 +138,7 @@ This is useful for doing batch operations in a safe way
 ```csharp
 var list = new []{ 1 , 2, 3 };
 
-var op = Operation.Create(() => "Resulting String");
+Operation<string> op = Operation.Success("Resulting String");
 
 var query = from x in list
 	    from y in op
@@ -135,8 +152,8 @@ Operations can also seemlessly transition into Linq Queries
 ```csharp
 var list = new []{ 1 , 2, 3 };
 
-var op1 = Operation.Create(() => "First");
-var op2 = Operation.Create(() => "Second")
+Operation<string> op1 = Operation.Success("First");
+Operation<string> op2 = Operation.Success("Second")
 
 var query = from x in op1
 	    from y in op2
@@ -149,15 +166,23 @@ var result = query.ToArray(); //["1 First Second", "2 First Second", "3 First Se
 The `Fold()` can also be used to collapse a sequence of operations by "folding" them into a single Operation
 
 ```csharp
-var op1 = Operation.Create(() => "Hello");
-var op2 = Operation.Create(() => "World");
+var op1 = Operation.Success("Hello");
+var op2 = Operation.Success("World");
 
 var all = new[] { op1, op2 }.Fold((a, s) => a + " " + s);
 
 var succeeded = all.Succeeded;	//true 
 var result = all.Result;		//"Hello World"
 ```
-### 5. Operation Dependency
+### 5. Chaining Error Cases
+In addition to Handling Success Cases, you can add error handling code for already failed exceptions
+
+```csharp
+var failed = Operation.Fail("Error Occured");
+failed.Catch(o => Console.WriteLine(o.Message));
+```
+
+### 6. Operation Dependency
 
 If an Operation depends on another operation, you simply call the `Unwrap()` method on the dependent Operation
 and it halts exectuion and raises the error for the main operation to catch.
@@ -189,7 +214,16 @@ var operation = Operation.Create(() => {
 });
 ```
 
-### 6. Async Support
+If your create Method returns a Operation you should use `CreateBind` instead
+
+```csharp
+var operation = Operation.CreateBind(() => {
+	var dependentOp = DependentOp();
+	return dependentOp;
+});
+```
+
+### 7. Async Support
 ```csharp
 Task<Operation<T>> asyncOp = Operation.Run(async () => {
     var result = await SomeLongRunningProcess();
@@ -203,7 +237,7 @@ var message = asyncOp.Result.Message	//Returns the message of the
 var result = asyncOp.Result.Result		//Result of SomeLongRunningProcess() 
 ```
 
-### 7. Conversion
+### 8. Conversion
 Its also easy to Convert Operations to Tasks for APIs that Require Tasks
 
 ```csharp

@@ -1,3 +1,9 @@
+Version 1.1.0
+-------------
+- Added Operator `CreateBind`
+- Added `Catch` Operator for chaining Error Cases
+- Added `Success()` and `Fail()` convinience methods to avoid Allocations and Exception Unwraping
+
 Version 1.0.9
 -------------
 - Moved away from project.json to csproj
