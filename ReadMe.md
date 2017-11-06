@@ -1,7 +1,7 @@
 # Operation Extension
 	
 [![Windows](https://ci.appveyor.com/api/projects/status/m4xei8kvod9fguqk/branch/master?svg=true)](https://ci.appveyor.com/project/odytrice/operation/branch/master)
-<!-- [![NuGet Operation](https://img.shields.io/nuget/v/Operation.svg?style=flat)](https://www.nuget.org/packages/Operation) -->
+[![NuGet Operation](https://img.shields.io/nuget/v/Operation.svg?style=flat)](https://www.nuget.org/packages/Operation)
 
 This Library provides a way for doing [Railway Oriented Programming](http://fsharpforfunandprofit.com/rop/) in C#. Which is simply a way of encoding Errors into the Type System.  The `Operation` class is a contract
 that tells the calling method that it will not throw an exception rather, any exeptions generated will be available in the returned `Operation` object.
