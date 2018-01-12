@@ -9,7 +9,7 @@ that tells the calling method that it will not throw an exception rather, any ex
 Using `Operation` helps ensure that your applications can fail gracefully even in unforeseen circumstances. It's typically used at the boundries 
 between domains/layers in your application.eg. Between Calls from WebApi to Business Layer or between calls from your Business Layer to your DataAccess Layer
 
-## Operation and Operation&lt;T&gt;
+## The Operation Class
 
 At the Heart of the library are two types. They are `Operation` and `Operation<T>`. 
 An Operation represents the output of a piece of computation. It has two states: Succeeded or Failed. 
@@ -244,3 +244,6 @@ Task<int> t = op.AsTask();
 ```
 
 Note that this is not the same as `Operation.Run` Execution will still block the running Thread
+
+Documentation available here
+[Github Readme](https://github.com/odytrice/Operation/blob/master/ReadMe.md)
