@@ -1,3 +1,12 @@
+Version 1.1.2
+-------------
+- Bumped Version number to resolve Nuget Conflicts
+- Setup Continous Delivery Build Pipeline to Nuget
+
+Version 1.1.1
+-------------
+- Fixed Bug in Operation.Unwrap
+
 Version 1.1.0
 -------------
 - Added Operator `CreateBind`
